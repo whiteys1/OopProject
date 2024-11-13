@@ -16,10 +16,12 @@ enum class EStatus{
 }
 
 
-class Post(val name: String,
-           val keyword:Array<String>,
-           val dueDate:String,
-           val date: String,
-           var apply: EStatus,
-           var like:ELike,
-           val description: String)
+data class Post(
+    val name: String = "",
+    val keyword: List<String> = listOf(),
+    val dueDate: String = "",
+    val date: String = "",
+    var apply: String = "NONE",  // Enum 대신 문자열로 변경
+    var like: String = "NONE",   // Enum 대신 문자열로 변경
+    val description: String = ""
+)

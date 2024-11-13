@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.oopproject.databinding.FragmentHomeBinding
+import com.example.oopproject.viewModel.PostsViewModel
 import com.google.android.material.chip.Chip
 
 class User(val userName:String, val gen: EGen)
@@ -17,20 +19,52 @@ class HomeFragment : Fragment() {
 
     private var user = User("KAU", EGen.COMPANY)
     private var binding: FragmentHomeBinding? = null
+    private val viewModel: PostsViewModel by activityViewModels()
+    private val postAdapter by lazy { PostAdapter(emptyList(), viewModel) }
 
-    val posts = arrayOf(
-        Post("취업데이", arrayOf("취업", "오프라인"), "2024-12-31", "2025-01-01", EStatus.APPLIED, ELike.NONE, "취업 특강"),
-        Post("기업특강", arrayOf("취업", "온라인"), "2024-12-31", "2025-01-25", EStatus.APPLIED, ELike.LIKE, "삼성 특강"),
-        Post("야구데이", arrayOf("취미", "온라인"), "2024-12-31", "2025-01-31", EStatus.NONE, ELike.LIKE, "취미(야구) 행사"),
-        Post("동아리데이", arrayOf("동아리", "오프라인"), "2024-11-19", "2024-12-31", EStatus.NONE, ELike.NONE, "동아리 행사")
-    )
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-    private val postAdapter by lazy { PostAdapter(posts) }
+        binding?.recPost?.layoutManager = LinearLayoutManager(context)
+        binding?.recPost?.adapter = postAdapter
 
-    // 선택된 키워드에 따른 필터링 기능
-    private fun filterByKeyword(selectedKeyword: String) {
-        postAdapter.filterByKeyword(selectedKeyword)
-        if (postAdapter.filteredPosts.isEmpty()) {
+        setChipClickListeners()
+
+        binding?.userIcon?.setImageResource(
+            when (user.gen) {
+                EGen.MALE -> R.drawable.maleicon
+                EGen.FEMALE -> R.drawable.femaleicon
+                EGen.COMPANY -> R.drawable.companyicon
+            }
+        )
+        binding?.userName?.text = user.userName
+
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // 초기화: 전체 게시물을 어댑터에 전달하여 모든 글 표시
+        viewModel.posts.observe(viewLifecycleOwner) { posts ->
+            if (postAdapter.itemCount == 0) { // 초기 로딩 시에만 전체 게시물 표시
+                postAdapter.updatePosts(posts)
+            }
+        }
+
+        // 필터링된 데이터 관찰
+        viewModel.filteredPosts.observe(viewLifecycleOwner) { filteredPosts ->
+            postAdapter.updatePosts(filteredPosts)
+        }
+    }
+
+    // 키워드를 기준으로 필터링 요청
+    private fun filterAndAlert(selectedKeyword: String) {
+        viewModel.filterByKeyword(selectedKeyword)
+        if (viewModel.filteredPosts.value.isNullOrEmpty()) {
             Toast.makeText(context, "필터링된 글 목록이 없습니다.", Toast.LENGTH_SHORT).show()
             binding?.txtRecom?.text = "추천 컨텐츠가 없습니다."
         } else {
@@ -42,7 +76,7 @@ class HomeFragment : Fragment() {
     private fun setChipClickListeners() {
         val chipClickListener = { chip: Chip ->
             val selectedKeyword = chip.text.toString()
-            filterByKeyword(selectedKeyword)
+            filterAndAlert(selectedKeyword)
         }
 
         binding?.apply {
@@ -52,42 +86,8 @@ class HomeFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentHomeBinding.inflate(inflater)
-
-        binding?.recPost?.layoutManager = LinearLayoutManager(context)
-        binding?.recPost?.adapter = postAdapter
-
-        setChipClickListeners()
-
-        binding?.userIcon?.setImageResource(when(user.gen){
-            EGen.MALE -> R.drawable.maleicon
-            EGen.FEMALE -> R.drawable.femaleicon
-            EGen.COMPANY -> R.drawable.companyicon
-        })
-
-        binding?.userName?.text = user.userName
-
-        return binding?.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        setChipClickListeners()
-        /*
-        binding?.컨텐츠.setOnClickListener{
-            ......
-        }
-         */
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         binding = null
     }
 }

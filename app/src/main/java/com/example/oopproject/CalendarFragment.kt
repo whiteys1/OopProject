@@ -7,7 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.oopproject.databinding.FragmentCalendarBinding
+import com.example.oopproject.viewModel.PostsViewModel
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -15,6 +19,8 @@ import java.util.Date
 class CalendarFragment : Fragment() {
 
     private var binding:FragmentCalendarBinding? = null
+    private val viewModel: PostsViewModel by activityViewModels()
+    private val appliedPostAdapter by lazy { appliedPostAdapter(emptyList(), viewModel) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +36,7 @@ class CalendarFragment : Fragment() {
         // 객체 생성
         val dayText: TextView = view.findViewById(R.id.dayText)
         val calendarView: CalendarView = view.findViewById(R.id.calendarView)
+        val recyclerView: RecyclerView = view.findViewById(R.id.recAppPost)
 
         // 날짜 형태
         val dateFormat:DateFormat = SimpleDateFormat("yyyy/MM/dd")
@@ -47,7 +54,17 @@ class CalendarFragment : Fragment() {
             // 변수 텍스트뷰에 담기
             dayText.text = day
         }
+
+        viewModel.filterByApply()
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = appliedPostAdapter
+
+        viewModel.appliedPosts.observe(viewLifecycleOwner){ appliedPosts ->
+            appliedPostAdapter.updatePosts(appliedPosts)
+        }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         binding = null
