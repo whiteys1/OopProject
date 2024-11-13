@@ -5,19 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/contentImage"
+    <ImageButton
+        android:id="@+id/imgbnt"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+        app:srcCompat="@drawable/ic_launcher_foreground" />
 
     <TextView
         android:id="@+id/txtName"
@@ -29,17 +29,16 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contentImage" />
+        app:layout_constraintTop_toBottomOf="@+id/imgbnt" />
 
     <TextView
         android:id="@+id/txtContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="12dp"
         android:text="상세정보 보기"
         app:layout_constraintStart_toEndOf="@+id/txtName"
-        app:layout_constraintTop_toBottomOf="@+id/contentImage" />
+        tools:layout_editor_absoluteY="236dp" />
 
     <TextView
         android:id="@+id/txtKeyarr"
@@ -56,13 +55,13 @@
         android:id="@+id/txtDuedate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="14dp"
         android:layout_marginEnd="24dp"
         android:text="마감 날짜"
         android:textColor="#D50D0D"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contentImage" />
+        app:layout_constraintTop_toBottomOf="@+id/LikeOrNot" />
 
     <ImageView
         android:id="@+id/LikeOrNot"
@@ -71,7 +70,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contentImage"
+        app:layout_constraintTop_toBottomOf="@+id/imgbnt"
         app:srcCompat="@drawable/emptylike" />
 
     <TextView

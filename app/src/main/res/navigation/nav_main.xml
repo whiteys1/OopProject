@@ -40,7 +40,7 @@
         tools:layout="@layout/fragment_write" />
     <fragment
         android:id="@+id/contentFragment"
-        android:name="com.example.oopproject.contentFragment"
+        android:name="com.example.oopproject.ContentFragment"
         android:label="fragment_content"
         tools:layout="@layout/fragment_content" />
 </navigation>

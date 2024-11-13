@@ -77,12 +77,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setChipClickListeners()
-        /*
-        binding?.컨텐츠.setOnClickListener{
-            ......
-        }
-         */
+        /*setChipClickListeners()
+        binding?.imgbnt.setOnClickListener{
+
+        }*/
+
 
     }
 
