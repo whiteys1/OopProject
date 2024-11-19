@@ -4,14 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oopproject.databinding.AppliedpostBinding
-import com.example.oopproject.viewModel.PostsViewModel
 import java.util.Date
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 val dateFormat = SimpleDateFormat("yyyy/MM/dd")
 
-class appliedPostAdapter(private var posts: List<Post>, val viewModel: PostsViewModel) : RecyclerView.Adapter<appliedPostAdapter.Holder>(){
+class appliedPostAdapter(private var posts: List<Post>) : RecyclerView.Adapter<appliedPostAdapter.Holder>(){
     class Holder(val binding: AppliedpostBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(post:Post){
             val targetDate = dateFormat.parse(post.date)

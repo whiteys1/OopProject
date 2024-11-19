@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.oopproject.databinding.FragmentHomeBinding
 import com.example.oopproject.viewModel.PostsViewModel
@@ -49,10 +48,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // 초기화: 전체 게시물을 어댑터에 전달하여 모든 글 표시
-        viewModel.posts.observe(viewLifecycleOwner) { posts ->
-            if (postAdapter.itemCount == 0) { // 초기 로딩 시에만 전체 게시물 표시
-                postAdapter.updatePosts(posts)
-            }
+        viewModel.posts.observe(viewLifecycleOwner){ posts ->
+            postAdapter.updatePosts(posts)
+            viewModel.clearFilter()
         }
 
         // 필터링된 데이터 관찰

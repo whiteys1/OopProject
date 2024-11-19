@@ -13,18 +13,11 @@ class PostsRepository {
     val database = Firebase.database
     val postRef = database.getReference("posts")
 
-    fun observePosts(posts: MutableLiveData<List<Post>>){
-        postRef.addValueEventListener(object : ValueEventListener{
+    fun observePosts(posts: MutableLiveData<List<Post>>) {
+        postRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val postsList = mutableListOf<Post>()
-                // 여러 post 데이터를 리스트로 변환하여 담기
-                snapshot.children.forEach { postSnapshot ->
-                    val post = postSnapshot.getValue(Post::class.java)
-                    if (post != null) {
-                        postsList.add(post)
-                    }
-                }
-                // 리스트를 LiveData에 반영
+                // 여러 post 데이터를 리스트로 변환하여 바로 LiveData에 반영
+                val postsList = snapshot.children.mapNotNull { it.getValue(Post::class.java) }
                 posts.postValue(postsList)
             }
 
@@ -33,31 +26,23 @@ class PostsRepository {
         })
     }
 
-    fun updateLikeStatus(post: Post) {
+    fun updateLikeStatus(post: Post, newLikeStatus: String) {
         postRef.orderByChild("name").equalTo(post.name)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    for (postSnapshot in snapshot.children) {
-                        val currentPost = postSnapshot.getValue(Post::class.java)
-                        if (currentPost != null && currentPost.name == post.name) {
-                            val newLikeStatus = if (currentPost.like == "LIKE") "NONE" else "LIKE"
-                            postSnapshot.ref.child("like").setValue(newLikeStatus)
-                        }
+                    val postSnapshot = snapshot.children.firstOrNull()
+                    if (postSnapshot != null) {
+                        postSnapshot.ref.child("like").setValue(newLikeStatus)
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    // 에러 발생 시 처리
                 }
             })
     }
-//    fun updateLikeStatus(post: Post) {
-//        val newLikeStatus = if (post.like == "LIKE") "NONE" else "LIKE"
 
-//        postRef.child(post.name).child("like").setValue(newLikeStatus)
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    post.like = newLikeStatus
-//                }
-//            }
-//    }
+    fun updateApplyStatus(post:Post){
+    }
+
 }

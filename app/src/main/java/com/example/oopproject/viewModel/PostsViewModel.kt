@@ -47,7 +47,11 @@ class PostsViewModel : ViewModel() {
             else -> ""
         }
         post.like = newLikeStatus
+        repository.updateLikeStatus(post, newLikeStatus)
+    }
 
-        repository.updateLikeStatus(post)
+    //홈화면 재로딩 시 이전 필터링된 글 목록으로 초기화
+    fun clearFilter(){
+        _filteredPosts.value = _posts.value ?: emptyList()
     }
 }

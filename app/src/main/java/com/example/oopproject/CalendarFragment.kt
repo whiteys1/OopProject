@@ -5,68 +5,55 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
-import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.oopproject.databinding.FragmentCalendarBinding
 import com.example.oopproject.viewModel.PostsViewModel
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 
 class CalendarFragment : Fragment() {
 
-    private var binding:FragmentCalendarBinding? = null
+    private var binding: FragmentCalendarBinding? = null
     private val viewModel: PostsViewModel by activityViewModels()
-    private val appliedPostAdapter by lazy { appliedPostAdapter(emptyList(), viewModel) }
+    private val appliedPostAdapter by lazy { appliedPostAdapter(emptyList()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCalendarBinding.inflate(inflater)
+        binding = FragmentCalendarBinding.inflate(inflater, container, false)
+
+        binding?.recAppPost?.layoutManager = LinearLayoutManager(context)
+        binding?.recAppPost?.adapter = appliedPostAdapter
+
+        // 날짜 설정
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd")
+        val date = Date(binding?.calendarView?.date ?: System.currentTimeMillis())
+        binding?.dayText?.text = dateFormat.format(date)
+
+        // CalendarView 날짜 변경 이벤트 // 첫번째 인자는 view <- 사용 X
+        binding?.calendarView?.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            val day = "${year}/${month + 1}/${dayOfMonth}"
+            binding?.dayText?.text = day
+        }
+
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 객체 생성
-        val dayText: TextView = view.findViewById(R.id.dayText)
-        val calendarView: CalendarView = view.findViewById(R.id.calendarView)
-        val recyclerView: RecyclerView = view.findViewById(R.id.recAppPost)
-
-        // 날짜 형태
-        val dateFormat:DateFormat = SimpleDateFormat("yyyy/MM/dd")
-
-        // date타입
-        val date:Date = Date(calendarView.date)
-
-        // 현재 날짜 담기
-        dayText.text = dateFormat.format(date)
-
-        // CalendarView 날짜 변경 이벤트
-        calendarView.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
-            // 날짜 변수에 담기
-            var day: String = "${year}/${month + 1}/${dayOfMonth}"
-            // 변수 텍스트뷰에 담기
-            dayText.text = day
-        }
-
         viewModel.filterByApply()
 
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = appliedPostAdapter
-
-        viewModel.appliedPosts.observe(viewLifecycleOwner){ appliedPosts ->
+        // 필터링된 데이터 관찰 // 신청할 시에 변경되는 부분이라 observe 구현 추가
+        viewModel.appliedPosts.observe(viewLifecycleOwner) { appliedPosts ->
             appliedPostAdapter.updatePosts(appliedPosts)
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        binding = null
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null // onDestroyView에서 binding을 null로 설정
     }
 }

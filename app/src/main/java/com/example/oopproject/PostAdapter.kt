@@ -7,41 +7,37 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.oopproject.databinding.PostBinding
 import com.example.oopproject.viewModel.PostsViewModel
 
-class PostAdapter(
-    private var posts: List<Post>, private val viewModel: PostsViewModel)
-    : RecyclerView.Adapter<PostAdapter.Holder>() {
-        class Holder(val binding: PostBinding) : RecyclerView.ViewHolder(binding.root) {
-            fun bind(post: Post, viewModel: PostsViewModel) {
+class PostAdapter(private var posts: List<Post>, private val viewModel: PostsViewModel) : RecyclerView.Adapter<PostAdapter.Holder>() {
+    class Holder(val binding: PostBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(post: Post, viewModel: PostsViewModel) {
+            binding.LikeOrNot.setImageResource(
+                when (post.like) {
+                    "LIKE" -> R.drawable.filledlike
+                    "NONE" -> R.drawable.emptylike
+                    else -> R.drawable.emptylike
+                })
+
+            binding.txtName.text = post.name
+            binding.txtKeyarr.text = post.keyword.joinToString(", ")
+            binding.txtDesciption.text = post.description
+            binding.txtDuedate.text = post.dueDate
+
+            binding.LikeOrNot.setOnClickListener {
+                viewModel.modifyLike(post)
+
                 binding.LikeOrNot.setImageResource(
                     when (post.like) {
                         "LIKE" -> R.drawable.filledlike
                         "NONE" -> R.drawable.emptylike
                         else -> R.drawable.emptylike
-                    }
-                )
+                    })
+            }
 
-                binding.txtName.text = post.name
-                binding.txtKeyarr.text = post.keyword.joinToString(", ")
-                binding.txtDesciption.text = post.description
-                binding.txtDuedate.text = post.dueDate
-
-                binding.LikeOrNot.setOnClickListener {
-                    viewModel.modifyLike(post)
-
-                    binding.LikeOrNot.setImageResource(
-                        when (post.like) {
-                            "LIKE" -> R.drawable.filledlike
-                            "NONE" -> R.drawable.emptylike
-                            else -> R.drawable.emptylike
-                        }
-                    )
-                }
-
-                binding.txtContent.setOnClickListener {
-                    it.findNavController().navigate(R.id.action_homeFragment_to_contentFragment)
-                }
+            binding.txtContent.setOnClickListener {
+                it.findNavController().navigate(R.id.action_homeFragment_to_contentFragment)
             }
         }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = PostBinding.inflate(LayoutInflater.from(parent.context), parent, false)

@@ -10,7 +10,7 @@
         android:id="@+id/dayText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="45dp"
         android:text="날짜"
         android:textAlignment="center"
         android:textSize="30sp"
@@ -20,9 +20,10 @@
 
     <CalendarView
         android:id="@+id/calendarView"
-        android:layout_width="349dp"
+        android:layout_width="wrap_content"
         android:layout_height="303dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
+        android:showWeekNumber="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dayText" />

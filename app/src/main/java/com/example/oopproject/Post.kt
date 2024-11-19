@@ -21,7 +21,7 @@ data class Post(
     val keyword: List<String> = listOf(),
     val dueDate: String = "",
     val date: String = "",
-    var apply: String = "NONE",  // Enum 대신 문자열로 변경
-    var like: String = "NONE",   // Enum 대신 문자열로 변경
+    var apply: String = "NONE",
+    var like: String = "NONE",
     val description: String = ""
 )
