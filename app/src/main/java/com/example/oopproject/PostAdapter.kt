@@ -1,5 +1,6 @@
 package com.example.oopproject
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -34,7 +35,10 @@ class PostAdapter(private var posts: List<Post>, private val viewModel: PostsVie
             }
 
             binding.txtContent.setOnClickListener {
-                it.findNavController().navigate(R.id.action_homeFragment_to_contentFragment)
+                val bundle = Bundle().apply {
+                    putString("postName", post.name)
+                }
+                it.findNavController().navigate(R.id.action_homeFragment_to_contentFragment, bundle)
             }
         }
     }

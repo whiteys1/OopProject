@@ -1,7 +1,9 @@
 package com.example.oopproject
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oopproject.databinding.AppliedpostBinding
 import java.util.Date
@@ -20,6 +22,13 @@ class appliedPostAdapter(private var posts: List<Post>) : RecyclerView.Adapter<a
             binding.applyDday.text = "D-$Dday"
             binding.applyDate.text = post.date
             binding.applyName.text = post.name
+
+            binding.applyContent.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putString("postName", post.name)
+                }
+                it.findNavController().navigate(R.id.action_calendarFragment_to_contentFragment, bundle)
+            }
         }
     }
 

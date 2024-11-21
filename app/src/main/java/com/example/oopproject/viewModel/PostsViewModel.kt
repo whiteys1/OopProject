@@ -22,6 +22,9 @@ class PostsViewModel : ViewModel() {
     private val _appliedPosts = MutableLiveData<List<Post>>()
     val appliedPosts: LiveData<List<Post>> = _appliedPosts
 
+    private val _selectedPosts = MutableLiveData<Post?>()
+    val selectedPosts: LiveData<Post?> = _selectedPosts
+
     private val repository = PostsRepository()
     init{
         repository.observePosts(_posts)
@@ -40,6 +43,10 @@ class PostsViewModel : ViewModel() {
         } ?: emptyList()
     }
 
+    fun findByName(postName: String){
+        val post = _posts.value?.find {it.name == postName}
+        _selectedPosts.value = post
+    }
     fun modifyLike(post: Post){
         val newLikeStatus = when(post.like){
             "LIKE" -> "NONE"

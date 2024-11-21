@@ -5,55 +5,55 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.oopproject.databinding.FragmentContentBinding
+import com.example.oopproject.viewModel.PostsViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class ContentFragment : Fragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [contentFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class contentFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentContentBinding? = null
+    private val binding get() = _binding
+    private val viewModel:PostsViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    val listOfComments = arrayOf(
+        Comment("User1", "Great post!", "10:30 AM"),
+        Comment("User2", "Thanks for sharing.", "11:00 AM"),
+        Comment("User3", "김치 맛있어요.", "11:00 AM"),
+        Comment("User4", "코리아 화이팅.", "11:00 AM"),
+        Comment("User5", "제로 사이다.", "11:00 AM"),
+        Comment("User6", "대한 독립 만세.", "11:00 AM"),
+        Comment("User7", "안녕하세요.", "11:00 AM"),
+        Comment("User8", "Hello world.", "11:00 AM")
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_content, container, false)
+        _binding = FragmentContentBinding.inflate(inflater, container, false)
+        val postName = arguments?.getString("postName")
+        if (postName != null){
+            viewModel.findByName(postName)
+        }
+        return binding?.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment contentFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            contentFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.selectedPosts.observe(viewLifecycleOwner){ post ->
+            if (post != null){
+                binding?.postTitle?.text = post.name
+                binding?.conKeyword?.text = post.keyword.toString()
             }
+        }
+        binding?.recView?.layoutManager = LinearLayoutManager(requireContext())
+        binding?.recView?.adapter = CommentsAdapter(listOfComments)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

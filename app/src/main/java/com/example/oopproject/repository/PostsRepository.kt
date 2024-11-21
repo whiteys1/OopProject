@@ -26,6 +26,22 @@ class PostsRepository {
         })
     }
 
+    fun getPostByName(postName: String): MutableLiveData<Post?>{
+        val postLiveData = MutableLiveData<Post?>()
+
+        postRef.orderByChild("name").equalTo(postName).addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val post = snapshot.children.firstOrNull()?.getValue(Post::class.java)
+                postLiveData.postValue(post)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+        return postLiveData
+    }
+
     fun updateLikeStatus(post: Post, newLikeStatus: String) {
         postRef.orderByChild("name").equalTo(post.name)
             .addListenerForSingleValueEvent(object : ValueEventListener {
