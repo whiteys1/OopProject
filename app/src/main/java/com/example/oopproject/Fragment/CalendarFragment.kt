@@ -1,4 +1,4 @@
-package com.example.oopproject
+package com.example.oopproject.Fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.oopproject.Adapter.appliedPostAdapter
 import com.example.oopproject.databinding.FragmentCalendarBinding
 import com.example.oopproject.viewModel.PostsViewModel
 import java.text.SimpleDateFormat

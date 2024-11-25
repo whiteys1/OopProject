@@ -1,4 +1,4 @@
-package com.example.oopproject
+package com.example.oopproject.Fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.oopproject.Adapter.PostAdapter
+import com.example.oopproject.EGen
+import com.example.oopproject.R
 import com.example.oopproject.databinding.FragmentHomeBinding
 import com.example.oopproject.viewModel.PostsViewModel
 import com.google.android.material.chip.Chip

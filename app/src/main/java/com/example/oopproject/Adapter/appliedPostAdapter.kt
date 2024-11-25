@@ -1,10 +1,12 @@
-package com.example.oopproject
+package com.example.oopproject.Adapter
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.oopproject.Post
+import com.example.oopproject.R
 import com.example.oopproject.databinding.AppliedpostBinding
 import java.util.Date
 import java.text.SimpleDateFormat
@@ -14,7 +16,7 @@ val dateFormat = SimpleDateFormat("yyyy/MM/dd")
 
 class appliedPostAdapter(private var posts: List<Post>) : RecyclerView.Adapter<appliedPostAdapter.Holder>(){
     class Holder(val binding: AppliedpostBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(post:Post){
+        fun bind(post: Post){
             val targetDate = dateFormat.parse(post.date)
             val currentDate = Date()
             val Dday = TimeUnit.MILLISECONDS.toDays(targetDate.time - currentDate.time)
