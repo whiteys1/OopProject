@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "463339626668",
+    "firebase_url": "https://oopproject-9e3b8-default-rtdb.firebaseio.com",
+    "project_id": "oopproject-9e3b8",
+    "storage_bucket": "oopproject-9e3b8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463339626668:android:42aec85ef4f2c76b7f7f09",
+        "android_client_info": {
+          "package_name": "com.example.oopproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVDtcfJvjgp9Sr82A5cZFGyipuZGV3EKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

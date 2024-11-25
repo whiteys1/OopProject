@@ -1,4 +1,4 @@
-package com.example.oopproject
+package com.example.oopproject.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.TextView
+import com.example.oopproject.R
 import com.example.oopproject.databinding.FragmentCalendarBinding
 import java.text.DateFormat
 import java.text.SimpleDateFormat

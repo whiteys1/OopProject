@@ -1,9 +1,12 @@
-package com.example.oopproject
+package com.example.oopproject.Adqpter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.oopproject.ELike
+import com.example.oopproject.Post
+import com.example.oopproject.R
 import com.example.oopproject.databinding.PostBinding
 
 class PostAdapter (val posts : Array<Post>) : RecyclerView.Adapter<PostAdapter.Holder>() {
@@ -19,7 +22,7 @@ class PostAdapter (val posts : Array<Post>) : RecyclerView.Adapter<PostAdapter.H
     }
 
     class Holder(val binding: PostBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(post:Post){
+        fun bind(post: Post){
 
             binding.txtName.text = post.name
             binding.txtKeyarr.text = post.keyword.joinToString( ", " )

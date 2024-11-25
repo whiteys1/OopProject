@@ -1,17 +1,18 @@
-package com.example.oopproject
+package com.example.oopproject.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.oopproject.databinding.FragmentSearchBinding
+import com.example.oopproject.Adqpter.KeywordAdapter
+import com.example.oopproject.viewmodel.KeywordViewModel
+import com.example.oopproject.databinding.FragmentKeywordBinding
 
 class KeywordFragment : Fragment() {
-    private var _binding: FragmentSearchBinding? = null
+    private var _binding: FragmentKeywordBinding? = null
     private val binding get() = _binding
     private lateinit var adapter: KeywordAdapter
     private val viewModel: KeywordViewModel by viewModels()
@@ -20,7 +21,7 @@ class KeywordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentKeywordBinding.inflate(inflater, container, false)
         return binding?.root
     }
 

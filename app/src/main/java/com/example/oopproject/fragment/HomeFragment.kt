@@ -1,4 +1,4 @@
-package com.example.oopproject
+package com.example.oopproject.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,8 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.oopproject.EGen
+import com.example.oopproject.ELike
+import com.example.oopproject.EStatus
+import com.example.oopproject.Post
+import com.example.oopproject.Adqpter.PostAdapter
+import com.example.oopproject.R
 import com.example.oopproject.databinding.FragmentHomeBinding
 import com.google.android.material.chip.Chip
 
@@ -16,7 +21,8 @@ class User(val userName:String, val gen: EGen)
 class HomeFragment : Fragment() {
 
     private var user = User("KAU", EGen.COMPANY)
-    private var binding: FragmentHomeBinding? = null
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding
 
     val posts = arrayOf(
         Post("취업데이", arrayOf("취업", "오프라인"), "2024-12-31", "2025-01-01", EStatus.APPLIED, ELike.NONE, "취업 특강"),
@@ -56,7 +62,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater)
+        _binding = FragmentHomeBinding.inflate(inflater)
 
         binding?.recPost?.layoutManager = LinearLayoutManager(context)
         binding?.recPost?.adapter = postAdapter
@@ -87,6 +93,6 @@ class HomeFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding = null
+        _binding = null
     }
 }

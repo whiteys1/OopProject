@@ -7,32 +7,27 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.oopproject.HomeFragment"
+        android:name="com.example.oopproject.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_calendarFragment"
             app:destination="@id/calendarFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_writeFragment"
             app:destination="@id/writeFragment" />
         <action
             android:id="@+id/action_homeFragment_to_contentFragment"
             app:destination="@id/contentFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_keywordFragment"
+            app:destination="@id/keywordFragment" />
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.example.oopproject.CalendarFragment"
+        android:name="com.example.oopproject.fragment.CalendarFragment"
         android:label="fragment_calendar"
         tools:layout="@layout/fragment_calendar" />
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.example.oopproject.searchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/writeFragment"
         android:name="com.example.oopproject.writeFragment"
@@ -40,7 +35,16 @@
         tools:layout="@layout/fragment_write" />
     <fragment
         android:id="@+id/contentFragment"
-        android:name="com.example.oopproject.ContentFragment"
+        android:name="com.example.oopproject.fragment.ContentFragment"
         android:label="fragment_content"
         tools:layout="@layout/fragment_content" />
+    <fragment
+        android:id="@+id/keywordFragment"
+        android:name="com.example.oopproject.fragment.KeywordFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_keyword" >
+        <action
+            android:id="@+id/action_keywordFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

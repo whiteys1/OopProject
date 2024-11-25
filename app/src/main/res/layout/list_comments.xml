@@ -10,7 +10,7 @@
         android:layout_height="94dp">
 
         <ImageView
-            android:id="@+id/UserProfile"
+            android:id="@+id/userProfile"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginStart="5dp"
@@ -46,7 +46,7 @@
             android:textColor="#000000"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/date"
-            app:layout_constraintStart_toEndOf="@+id/UserProfile"
+            app:layout_constraintStart_toEndOf="@+id/userProfile"
             app:layout_constraintTop_toBottomOf="@+id/cmt" />
 
         <TextView
@@ -58,7 +58,7 @@
             android:layout_marginBottom="6dp"
             android:text="2024/12/31"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/UserProfile"
+            app:layout_constraintStart_toEndOf="@+id/userProfile"
             app:layout_constraintTop_toBottomOf="@+id/userName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
