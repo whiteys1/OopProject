@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.oopproject.Fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/kewordFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_contentFragment"
+            app:destination="@id/contentFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_keywordFragment"
+            app:destination="@id/keywordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.oopproject.Fragment.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_contentFragment"
+            app:destination="@id/contentFragment" />
+        <argument
+            android:name="postName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/kewordFragment"
+        android:name="com.example.oopproject.Fragment.KeywordFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/contentFragment"
+        android:name="com.example.oopproject.Fragment.ContentFragment"
+        android:label="fragment_content"
+        tools:layout="@layout/fragment_content" />
+    <fragment
+        android:id="@+id/keywordFragment"
+        android:name="com.example.oopproject.fragment.KeywordFragment"
+        android:label="fragment_keyword"
+        tools:layout="@layout/fragment_keyword" >
+        <action
+            android:id="@+id/action_keywordFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+</navigation>
