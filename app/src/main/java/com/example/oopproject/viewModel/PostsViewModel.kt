@@ -43,10 +43,11 @@ class PostsViewModel : ViewModel() {
         } ?: emptyList()
     }
 
-    fun findByName(postName: String){
-        val post = _posts.value?.find {it.name == postName}
+    fun findById(postId: String){
+        val post = _posts.value?.find {it.postId == postId}
         _selectedPosts.value = post
     }
+
     fun modifyLike(post: Post){
         val newLikeStatus = when(post.like){
             "LIKE" -> "NONE"

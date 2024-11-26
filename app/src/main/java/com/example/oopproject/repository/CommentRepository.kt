@@ -16,24 +16,27 @@ class CommentRepository {
     fun observeComments(postId: String): LiveData<List<Comment>> {
         val commentsLiveData = MutableLiveData<List<Comment>>()
 
-        // posts/postId/comments 경로에서 데이터 가져오기
         database.child("posts").child(postId).child("comments")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val commentsList = mutableListOf<Comment>()
+                    if (!snapshot.exists()) {
+                        commentsLiveData.value = emptyList()
+                        return
+                    }
 
+                    val commentsList = mutableListOf<Comment>()
                     for (commentSnapshot in snapshot.children) {
                         val nickname = commentSnapshot.child("nickname").getValue(String::class.java) ?: "Unknown"
                         val comment = commentSnapshot.child("comment").getValue(String::class.java) ?: ""
                         val createdAt = commentSnapshot.child("createdAt").getValue(String::class.java) ?: ""
-
                         commentsList.add(Comment(nickname, comment, createdAt))
                     }
                     commentsLiveData.value = commentsList
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    //Log.e("CommentRepository", "Error loading comments: ${error.message}")
+                    // 에러 처리
+                    commentsLiveData.value = emptyList()
                 }
             })
 

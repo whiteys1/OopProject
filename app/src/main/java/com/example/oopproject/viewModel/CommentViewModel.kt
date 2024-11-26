@@ -7,12 +7,17 @@ import com.example.oopproject.Comment
 import com.example.oopproject.repository.CommentRepository
 
 class CommentViewModel : ViewModel() {
-    private val repository = CommentRepository() // Repository를 직접 생성
-    private lateinit var _comments: LiveData<List<Comment>> // LiveData 선언
+    private val repository = CommentRepository()
+
+    // 기본값으로 빈 리스트를 가진 LiveData 초기화
+    private val _comments: MutableLiveData<List<Comment>> = MutableLiveData(emptyList())
     val comments: LiveData<List<Comment>> get() = _comments
 
-    // 초기화 시 Repository에서 LiveData 연결
+    // 초기화 메서드
     fun initialize(postId: String) {
-        _comments = repository.observeComments(postId)
+        val liveDataFromRepo = repository.observeComments(postId)
+        liveDataFromRepo.observeForever { fetchedComments ->
+            _comments.value = fetchedComments
+        }
     }
 }

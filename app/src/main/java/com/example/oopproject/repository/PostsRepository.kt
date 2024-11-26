@@ -36,6 +36,7 @@ class PostsRepository {
             }
 
             override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
             }
         })
         return postLiveData
@@ -52,6 +53,7 @@ class PostsRepository {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    // 에러 발생 시 처리
                 }
             })
     }

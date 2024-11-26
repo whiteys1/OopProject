@@ -1,23 +1,23 @@
 package com.example.oopproject
 
-//enum class ELike{
-//    LIKE,
-//    NONE
-//}
-
+enum class ELike{
+    LIKE,
+    NONE
+}
 enum class EGen{
     MALE,
     FEMALE,
     COMPANY
 }
 
-//enum class EStatus{
-//    APPLIED,
-//    NONE
-//}
+enum class EStatus{
+    APPLIED,
+    NONE
+}
 
 
 data class Post(
+    val postId: String = "",
     val name: String = "",
     val keyword: List<String> = listOf(),
     val dueDate: String = "",
