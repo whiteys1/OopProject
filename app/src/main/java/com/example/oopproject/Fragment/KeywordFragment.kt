@@ -1,4 +1,4 @@
-package com.example.oopproject.fragment
+package com.example.oopproject.Fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.oopproject.Adqpter.KeywordAdapter
-import com.example.oopproject.viewmodel.KeywordViewModel
 import com.example.oopproject.databinding.FragmentKeywordBinding
+import com.example.oopproject.viewModel.KeywordViewModel
 
 class KeywordFragment : Fragment(), KeywordAdapter.OnKeywordSelectedListener  {
     private var _binding: FragmentKeywordBinding? = null

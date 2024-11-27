@@ -14,9 +14,6 @@
             android:id="@+id/action_homeFragment_to_calendarFragment"
             app:destination="@id/calendarFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_searchFragment"
-            app:destination="@id/kewordFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_contentFragment"
             app:destination="@id/contentFragment" />
         <action
@@ -42,18 +39,13 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/kewordFragment"
-        android:name="com.example.oopproject.fragment.KeywordFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
-    <fragment
         android:id="@+id/contentFragment"
-        android:name="com.example.oopproject.fragment.ContentFragment"
+        android:name="com.example.oopproject.Fragment.ContentFragment"
         android:label="fragment_content"
         tools:layout="@layout/fragment_content" />
     <fragment
         android:id="@+id/keywordFragment"
-        android:name="com.example.oopproject.fragment.KeywordFragment"
+        android:name="com.example.oopproject.Fragment.KeywordFragment"
         android:label="fragment_keyword"
         tools:layout="@layout/fragment_keyword" >
         <action

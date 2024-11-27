@@ -1,7 +1,6 @@
-package com.example.oopproject.viewmodel
+package com.example.oopproject.viewModel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.oopproject.Comment
 import com.example.oopproject.repository.CommentRepository

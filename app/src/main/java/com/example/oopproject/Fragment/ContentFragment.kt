@@ -1,4 +1,4 @@
-package com.example.oopproject.fragment
+package com.example.oopproject.Fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -10,8 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.oopproject.Adqpter.CommentAdapter
-import com.example.oopproject.viewmodel.CommentViewModel
 import com.example.oopproject.databinding.FragmentContentBinding
+import com.example.oopproject.viewModel.CommentViewModel
 import com.example.oopproject.viewModel.PostsViewModel
 
 class ContentFragment : Fragment() {

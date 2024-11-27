@@ -1,4 +1,4 @@
-package com.example.oopproject.viewmodel
+package com.example.oopproject.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
