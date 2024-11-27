@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeFragment_to_writeFragment"
             app:destination="@id/writeFragment"/>
+        <argument
+            android:name="postId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
@@ -35,17 +38,17 @@
             android:id="@+id/action_calendarFragment_to_contentFragment"
             app:destination="@id/contentFragment" />
         <argument
-            android:name="postName"
+            android:name="postId"
             app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/kewordFragment"
-        android:name="com.example.oopproject.Fragment.KeywordFragment"
+        android:name="com.example.oopproject.fragment.KeywordFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/contentFragment"
-        android:name="com.example.oopproject.Fragment.ContentFragment"
+        android:name="com.example.oopproject.fragment.ContentFragment"
         android:label="fragment_content"
         tools:layout="@layout/fragment_content" />
     <fragment

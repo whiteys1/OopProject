@@ -27,7 +27,7 @@ class appliedPostAdapter(private var posts: List<Post>) : RecyclerView.Adapter<a
 
             binding.applyContent.setOnClickListener {
                 val bundle = Bundle().apply {
-                    putString("postName", post.name)
+                    putString("postId", post.postId)
                 }
                 it.findNavController().navigate(R.id.action_calendarFragment_to_contentFragment, bundle)
             }

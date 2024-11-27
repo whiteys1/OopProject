@@ -18,6 +18,7 @@ enum class EGen{
 
 
 data class Post(
+    val postId: String = "",
     val name: String = "",
     val keyword: List<String> = listOf(),
     val dueDate: String = "",

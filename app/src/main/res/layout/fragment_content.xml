@@ -78,7 +78,7 @@
                     tools:layout_editor_absoluteX="0dp" />
 
                 <TextView
-                    android:id="@+id/conKeyword"
+                    android:id="@+id/conKeyword1"
                     android:layout_width="57dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="36dp"
@@ -88,12 +88,12 @@
                     android:layout_weight="1"
                     android:text="키워드 1"
                     app:layout_constraintBottom_toTopOf="@+id/textView2"
-                    app:layout_constraintEnd_toStartOf="@+id/textView8"
+                    app:layout_constraintEnd_toStartOf="@+id/conKeyword2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/conKeyword2"
                     android:layout_width="60dp"
                     android:layout_height="35dp"
                     android:layout_marginTop="25dp"
@@ -102,11 +102,11 @@
                     android:layout_weight="1"
                     android:text="키워드2"
                     app:layout_constraintBottom_toTopOf="@+id/textView2"
-                    app:layout_constraintEnd_toStartOf="@+id/textView9"
+                    app:layout_constraintEnd_toStartOf="@+id/conKeyword3"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/conKeyword3"
                     android:layout_width="60dp"
                     android:layout_height="35dp"
                     android:layout_marginTop="25dp"
