@@ -27,12 +27,28 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() 
         fun bind(keyword: Keyword) {
             binding.keywordButton.text = keyword.keyword
             binding.keywordButton.setOnClickListener {
-                // 버튼 클릭시 로직 구현
-                selectedKeywords[currentIndex] = keyword.keyword  // 배열의 현재 위치에 키워드를 추가
-                currentIndex = (currentIndex + 1) % 3  // 인덱스를 순환
-                listener?.onKeywordSelected(selectedKeywords)
-                // 테스트 코드
-                //Toast.makeText(itemView.context, "${keyword.keyword} clicked!", Toast.LENGTH_SHORT).show()
+                val newKeyword = keyword.keyword
+                // 중복 체크
+                if (!selectedKeywords.contains(newKeyword)) {
+                    // 비어있는 첫 번째 위치 찾기
+                    val emptyIndex = selectedKeywords.indexOfFirst { it == null }
+                    if (emptyIndex != -1) {
+                        // 비어있는 위치에 추가
+                        selectedKeywords[emptyIndex] = newKeyword
+                        currentIndex = (emptyIndex + 1) % 3
+                    } else if (currentIndex < 3) {
+                        // 모든 위치가 차있다면 순환
+                        selectedKeywords[currentIndex] = newKeyword
+                        currentIndex = (currentIndex + 1) % 3
+                    }
+                    listener?.onKeywordSelected(selectedKeywords)
+
+                    // 테스트용 토스트 메시지 (선택사항)
+                    Toast.makeText(itemView.context, "키워드가 추가되었습니다", Toast.LENGTH_SHORT).show()
+                } else {
+                    // 이미 선택된 키워드라면 토스트 메시지 표시
+                    Toast.makeText(itemView.context, "이미 선택된 키워드입니다", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
