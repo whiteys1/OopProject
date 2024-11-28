@@ -1,5 +1,6 @@
 package com.example.oopproject.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.oopproject.Post
 import com.google.firebase.Firebase
@@ -16,8 +17,23 @@ class PostsRepository {
     fun observePosts(posts: MutableLiveData<List<Post>>) {
         postRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // 여러 post 데이터를 리스트로 변환하여 바로 LiveData에 반영
-                val postsList = snapshot.children.mapNotNull { it.getValue(Post::class.java) }
+                val postsList = mutableListOf<Post>()
+                for (postSnapshot in snapshot.children) {
+                    val postId = postSnapshot.child("postId").getValue(String::class.java) ?: "1"
+                    val name = postSnapshot.child("name").getValue(String::class.java) ?: "오류"
+
+                    val keyword = postSnapshot.child("keyword").children.mapNotNull {
+                        it.getValue(String::class.java) // 각 리스트 요소를 String으로 변환
+                    }
+
+                    val dueDate = postSnapshot.child("dueDate").getValue(String::class.java) ?: ""
+                    val date = postSnapshot.child("date").getValue(String::class.java) ?: ""
+                    val apply = postSnapshot.child("apply").getValue(String::class.java) ?: "NONE"
+                    val like = postSnapshot.child("like").getValue(String::class.java) ?: "NONE"
+                    val description = postSnapshot.child("description").getValue(String::class.java) ?: ""
+                    postsList.add(Post(postId, name, keyword, dueDate, date, apply, like, description))
+                }
+
                 posts.postValue(postsList)
             }
 
@@ -26,35 +42,14 @@ class PostsRepository {
         })
     }
 
-    fun getPostByName(postName: String): MutableLiveData<Post?>{
-        val postLiveData = MutableLiveData<Post?>()
 
-        postRef.orderByChild("name").equalTo(postName).addListenerForSingleValueEvent(object: ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val post = snapshot.children.firstOrNull()?.getValue(Post::class.java)
-                postLiveData.postValue(post)
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
-        return postLiveData
+    fun updateLikeStatus(postId: String, likeStatus: String) {
+        val newStatus = if (likeStatus == "LIKE") "NONE" else "LIKE"
+
+        postRef.child("post$postId").child("like").setValue(newStatus)
     }
 
-    fun updateLikeStatus(post: Post, newLikeStatus: String) {
-        postRef.orderByChild("name").equalTo(post.name)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val postSnapshot = snapshot.children.firstOrNull()
-                    if (postSnapshot != null) {
-                        postSnapshot.ref.child("like").setValue(newLikeStatus)
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                }
-            })
-    }
 
     fun updateApplyStatus(post:Post){
     }

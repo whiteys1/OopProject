@@ -1,12 +1,10 @@
 package com.example.oopproject.Fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +12,6 @@ import com.example.oopproject.Adapter.CommentAdapter
 import com.example.oopproject.R
 import com.example.oopproject.databinding.FragmentContentBinding
 import com.example.oopproject.viewModel.PostDetailViewModel
-import com.example.oopproject.viewModel.PostsViewModel
 
 class ContentFragment : Fragment() {
     private var _binding: FragmentContentBinding? = null
