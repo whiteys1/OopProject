@@ -74,14 +74,4 @@
         app:layout_constraintTop_toBottomOf="@+id/contentImage"
         app:srcCompat="@drawable/emptylike" />
 
-    <TextView
-        android:id="@+id/txtDesciption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:text="description"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtKeyarr" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

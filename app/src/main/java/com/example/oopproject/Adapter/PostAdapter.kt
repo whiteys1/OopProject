@@ -23,7 +23,6 @@ class PostAdapter(private var posts: List<Post>, private val viewModel: PostsVie
 
             binding.txtName.text = post.name
             binding.txtKeyarr.text = post.keyword.joinToString(", ")
-            binding.txtDesciption.text = post.description
             binding.txtDuedate.text = post.dueDate
 
             binding.LikeOrNot.setOnClickListener {
