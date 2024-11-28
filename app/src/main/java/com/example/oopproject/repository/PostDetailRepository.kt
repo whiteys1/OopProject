@@ -1,5 +1,6 @@
 package com.example.oopproject.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.oopproject.Comment
@@ -22,14 +23,15 @@ class PostDetailRepository {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val commentsList = mutableListOf<Comment>()
 
-                    for (commentSnapshot in snapshot.children) {
-                        val user = commentSnapshot.child("user").getValue(String::class.java) ?: "Unknown"
-                        val text = commentSnapshot.child("text").getValue(String::class.java) ?: ""
+                    for (commentSnapshot in snapshot.children) { //디비 댓글 수 만큼 반복문
+                        //db의 내용을 가져옴
+                        val nickname = commentSnapshot.child("nickname").getValue(String::class.java) ?: "Unknown"
+                        val comment = commentSnapshot.child("comment").getValue(String::class.java) ?: ""
                         val createdAt = commentSnapshot.child("createdAt").getValue(String::class.java) ?: ""
 
-                        commentsList.add(Comment(
-                            nickname = user,  // user를 nickname으로 사용
-                            comment = text,   // text를 comment로 사용
+                        commentsList.add(Comment( //가져온 정보를 리스트에 추가,
+                            nickname = nickname,
+                            comment = comment,
                             createdAt = createdAt
                         ))
                     }
@@ -37,7 +39,6 @@ class PostDetailRepository {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    //Log.e("CommentRepository", "Error loading comments: ${error.message}")
                 }
             })
 
@@ -47,7 +48,7 @@ class PostDetailRepository {
     fun observeLikeStatus(postId: String): LiveData<String> {
         val likeLiveData = MutableLiveData<String>()
 
-        database.child("posts").child(postId).child("like")
+        database.child("posts").child("post$postId").child("like")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val likeStatus = snapshot.getValue(String::class.java) ?: "NONE"
@@ -55,7 +56,6 @@ class PostDetailRepository {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    // 에러 처리
                 }
             })
 
@@ -68,7 +68,6 @@ class PostDetailRepository {
         database.child("posts").child("post$postId") // "post" + postId로 수정
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    //Log.d("PostDetailRepository", "Data received: ${snapshot.value}")
                     val post = Post(
                         postId = snapshot.child("postId").getValue(String::class.java) ?: "",
                         name = snapshot.child("name").getValue(String::class.java) ?: "",
@@ -81,12 +80,10 @@ class PostDetailRepository {
                         like = snapshot.child("like").getValue(String::class.java) ?: "NONE",
                         description = snapshot.child("description").getValue(String::class.java) ?: ""
                     )
-                    //Log.d("PostDetailRepository", "Mapped Post: $post")
                     postDetailLiveData.value = post
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    //Log.e("PostDetailRepository", "Error loading post: ${error.message}")
                 }
             })
 
@@ -95,6 +92,11 @@ class PostDetailRepository {
 
     fun updateLikeStatus(postId: String, currentStatus: String) {
         val newStatus = if (currentStatus == "LIKE") "NONE" else "LIKE"
-        database.child("posts").child(postId).child("like").setValue(newStatus)
+        database.child("posts").child("post$postId").child("like").setValue(newStatus)
+    }
+
+    fun updateApplyStatus(postId: String, currentStatus: String) {
+        val newStatus = if (currentStatus == "NONE") "APPLIED" else "NONE"
+        database.child("posts").child("post$postId").child("apply").setValue(newStatus)
     }
 }
