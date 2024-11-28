@@ -1,4 +1,4 @@
-package com.example.oopproject.Adqpter
+package com.example.oopproject.Adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

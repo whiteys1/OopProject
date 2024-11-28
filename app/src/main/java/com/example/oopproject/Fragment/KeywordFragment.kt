@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.oopproject.Adqpter.KeywordAdapter
+import com.example.oopproject.Adapter.KeywordAdapter
 import com.example.oopproject.databinding.FragmentKeywordBinding
 import com.example.oopproject.viewModel.KeywordViewModel
 

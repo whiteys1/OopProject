@@ -3,10 +3,10 @@ package com.example.oopproject.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.oopproject.Comment
-import com.example.oopproject.repository.CommentRepository
+import com.example.oopproject.repository.PostDetailRepository
 
 class CommentViewModel : ViewModel() {
-    private val repository = CommentRepository() // Repository를 직접 생성
+    private val repository = PostDetailRepository() // Repository를 직접 생성
     private lateinit var _comments: LiveData<List<Comment>> // LiveData 선언
     val comments: LiveData<List<Comment>> get() = _comments
 
