@@ -32,9 +32,15 @@ class PostsViewModel : ViewModel() {
 
     fun filterByApply(){
         val currentDate = Date()
-        _appliedPosts.value = _posts.value?.filter { post ->
+        val filteredPosts = _posts.value?.filter { post ->
             post.apply == "APPLIED" && dateFormat.parse(post.date).after(currentDate)
         } ?: emptyList()
+
+        val sortedPosts = filteredPosts.sortedBy { post ->
+            dateFormat.parse(post.date).time
+        }
+
+        _appliedPosts.value = sortedPosts
     }
 
     fun filterByKeyword(selectedKeyword: String) {
@@ -47,14 +53,10 @@ class PostsViewModel : ViewModel() {
         val post = _posts.value?.find {it.postId == postId}
         _selectedPosts.value = post
     }
+
     fun modifyLike(post: Post){
-        val newLikeStatus = when(post.like){
-            "LIKE" -> "NONE"
-            "NONE" -> "LIKE"
-            else -> ""
-        }
-        post.like = newLikeStatus
-        repository.updateLikeStatus(post, newLikeStatus)
+        val postId = post.postId
+        repository.updateLikeStatus(postId, post.like)
     }
 
     //홈화면 재로딩 시 이전 필터링된 글 목록으로 초기화
