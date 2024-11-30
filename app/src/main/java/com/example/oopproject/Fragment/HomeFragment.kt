@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.oopproject.Adapter.PostAdapter
 import com.example.oopproject.EGen
@@ -14,13 +16,15 @@ import com.example.oopproject.R
 import com.example.oopproject.databinding.FragmentHomeBinding
 import com.example.oopproject.viewModel.PostsViewModel
 import com.google.android.material.chip.Chip
+import kotlinx.coroutines.flow.collectLatest
 
 class User(val userName:String, val gen: EGen)
 
 class HomeFragment : Fragment() {
 
     private var user = User("KAU", EGen.COMPANY)
-    private var binding: FragmentHomeBinding? = null
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding
     private val viewModel: PostsViewModel by activityViewModels()
     private val postAdapter by lazy { PostAdapter(emptyList(), viewModel) }
 
@@ -28,20 +32,15 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         binding?.recPost?.layoutManager = LinearLayoutManager(context)
         binding?.recPost?.adapter = postAdapter
 
         setChipClickListeners()
 
-        binding?.userIcon?.setImageResource(
-            when (user.gen) {
-                EGen.MALE -> R.drawable.maleicon
-                EGen.FEMALE -> R.drawable.femaleicon
-                EGen.COMPANY -> R.drawable.companyicon
-            }
-        )
+        binding?.userIcon?.setImageResource(R.drawable.profile)
+
         binding?.userName?.text = user.userName
 
         return binding?.root
@@ -89,6 +88,33 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
+        _binding = null
     }
 }
+
+
+
+// 페이징 시도
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        lifecycleScope.launchWhenStarted {
+//            viewModel.postsFlow.collectLatest { pagingData ->
+//                postAdapter.submitData(pagingData)
+//            }
+//        }
+//
+//        // 필터링된 데이터 관찰
+//        viewModel.filteredPosts.observe(viewLifecycleOwner) { filteredPosts ->
+//            val pagingData = PagingData.from(filteredPosts)
+//            lifecycleScope.launchWhenStarted {
+//                postAdapter.submitData(pagingData)
+//            }
+//        }
+//    }
+
+//        // 초기화: 전체 게시물을 어댑터에 전달하여 모든 글 표시
+//        viewModel.posts.observe(viewLifecycleOwner){ posts ->
+//            postAdapter.submit(posts)
+//            viewModel.clearFilter()
+//        }

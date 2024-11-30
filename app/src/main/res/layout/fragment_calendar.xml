@@ -18,22 +18,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <CalendarView
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="303dp"
         android:layout_marginTop="8dp"
-        android:showWeekNumber="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dayText" />
+        app:layout_constraintTop_toBottomOf="@+id/dayText"
+        app:mcv_arrowColor="#FF0000"
+        app:mcv_calendarMode="month"
+        app:mcv_firstDayOfWeek="sunday"
+        app:mcv_selectionColor="@color/design_default_color_secondary"
+        app:mcv_showOtherDates="other_months"
+        app:mcv_titleAnimationOrientation="vertical" >
+
+    </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
 
     <TextView
-        android:id="@+id/conKeyword1"
+        android:id="@+id/applyList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="신청목록"
+        android:text="전체 신청목록"
         android:textAlignment="inherit"
         android:textColor="#3F51B5"
         android:textSize="25sp"
@@ -45,7 +52,6 @@
         android:id="@+id/recAppPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/conKeyword1"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="495dp" />
+        app:layout_constraintTop_toBottomOf="@+id/applyList"
+        tools:layout_editor_absoluteX="0dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

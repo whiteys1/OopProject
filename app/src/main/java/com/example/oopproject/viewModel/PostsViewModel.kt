@@ -1,8 +1,13 @@
 package com.example.oopproject.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.example.oopproject.Post
 import com.example.oopproject.repository.PostsRepository
 import java.text.SimpleDateFormat
@@ -22,15 +27,16 @@ class PostsViewModel : ViewModel() {
     private val _appliedPosts = MutableLiveData<List<Post>>()
     val appliedPosts: LiveData<List<Post>> = _appliedPosts
 
-    private val _selectedPosts = MutableLiveData<Post?>()
-    val selectedPosts: LiveData<Post?> = _selectedPosts
+    private val _selectedPosts = MutableLiveData<List<Post>>()
+    val selectedPosts: LiveData<List<Post>> = _selectedPosts
 
     private val repository = PostsRepository()
-    init{
+
+    init {
         repository.observePosts(_posts)
     }
 
-    fun filterByApply(){
+    fun filterByApply() {
         val currentDate = Date()
         val filteredPosts = _posts.value?.filter { post ->
             post.apply == "APPLIED" && dateFormat.parse(post.date).after(currentDate)
@@ -43,24 +49,36 @@ class PostsViewModel : ViewModel() {
         _appliedPosts.value = sortedPosts
     }
 
+    fun filterInCalendar(selectedDate: String){
+        _selectedPosts.value = _appliedPosts.value?.filter { post ->
+            val compareDate = dateFormat.format(dateFormat.parse(selectedDate))
+            post.date == compareDate
+        } ?: _appliedPosts.value
+    }
+
     fun filterByKeyword(selectedKeyword: String) {
         _filteredPosts.value = _posts.value?.filter { post ->
             post.keyword.contains(selectedKeyword)
         } ?: emptyList()
     }
 
-    fun findById(postId: String){
-        val post = _posts.value?.find {it.postId == postId}
-        _selectedPosts.value = post
-    }
-
-    fun modifyLike(post: Post){
+    fun modifyLike(post: Post) {
         val postId = post.postId
         repository.updateLikeStatus(postId, post.like)
     }
 
     //홈화면 재로딩 시 이전 필터링된 글 목록으로 초기화
-    fun clearFilter(){
+    fun clearFilter() {
         _filteredPosts.value = _posts.value ?: emptyList()
     }
 }
+
+//페이징 시도
+//    val postsFlow = Pager(
+//        config = PagingConfig(
+//            pageSize = 4,
+//            initialLoadSize = 4,
+//            enablePlaceholders = false
+//        ),
+//        pagingSourceFactory = { repository.PostPagingSource() }
+//    ).flow.cachedIn(viewModelScope)
