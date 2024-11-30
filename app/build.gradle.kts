@@ -41,9 +41,9 @@ android {
 }
 
 dependencies {
-    implementation ("androidx.paging:paging-runtime:3.3.4")
     implementation("com.prolificinteractive:material-calendarview:1.4.3")
     implementation("com.google.firebase:firebase-database:21.0.0'")
+    implementation("androidx.paging:paging-runtime:3.3.4")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
