@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_SignIn"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".Fragment.SignInFragment">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/back_button_SignIn"
+        android:src="@android:drawable/ic_menu_revert"
+        android:contentDescription="Back in SignIn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_SignIn"
+        android:text="회원가입"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/back_button_SignIn"
+        app:layout_constraintBottom_toBottomOf="@id/back_button_SignIn"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:id="@+id/horizontalLine_SignIn"
+        android:background="#000000"
+        app:layout_constraintTop_toBottomOf="@id/back_button_SignIn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/email_text_SignIn"
+        android:text="이메일 (사용자 ID)"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/horizontalLine_SignIn"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="@id/back_button_SignIn"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:id="@+id/email_Edit_SignIn"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/email_text_SignIn"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_border"
+        android:hint="insert Email"
+        android:paddingStart="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nickname_text"
+        android:text="닉네임"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/email_Edit_SignIn"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/back_button_SignIn"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:id="@+id/nickname_edit_SignIn"
+        android:textSize="16sp"
+        android:hint="insert nickname"
+        android:paddingStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/nickname_text"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_border"
+        app:layout_constraintStart_toStartOf="@id/back_button_SignIn"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pass_text_SignIn"
+        android:text="비밀번호"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/nickname_edit_SignIn"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/back_button_SignIn"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:id="@+id/pass_edit_Signin"
+        android:hint="insert pass"
+        android:textSize="16sp"
+        android:inputType="textPassword"
+        android:background="@drawable/edittext_border"
+        app:layout_constraintTop_toBottomOf="@id/pass_text_SignIn"
+        android:layout_marginTop="10dp"
+        android:paddingStart="10dp"
+        app:layout_constraintStart_toStartOf="@id/back_button_SignIn"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/repass_text_Signin"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/pass_edit_Signin"
+        android:layout_marginTop="20dp"
+        android:text="비밀번호 확인"
+        app:layout_constraintStart_toStartOf="@id/back_button_SignIn"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:id="@+id/repass_edit_Signin"
+        android:hint="insert repass"
+        android:textSize="16sp"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@id/repass_text_Signin"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_border"
+        android:paddingStart="10dp"
+        app:layout_constraintStart_toStartOf="@id/back_button_SignIn"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/submit_Signin"
+        android:text="회원가입"
+        app:layout_constraintTop_toBottomOf="@id/repass_edit_Signin"
+        android:layout_marginTop="20dp"/>
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
