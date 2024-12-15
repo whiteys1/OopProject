@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_Login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".Fragment.LoginFragment" >
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/back_button_login"
+        android:src="@android:drawable/ic_menu_revert"
+        android:contentDescription="Back in Login"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_login"
+        android:text="로그인"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@id/back_button_login"
+        app:layout_constraintBottom_toBottomOf="@id/back_button_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:id="@+id/horizontalLine_login"
+        android:background="#000000"
+        app:layout_constraintTop_toBottomOf="@id/back_button_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/email_text_login"
+        android:text="이메일"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/back_button_login"
+        app:layout_constraintTop_toBottomOf="@id/horizontalLine_login"
+        android:layout_marginTop="24dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:textSize="16sp"
+        android:id="@+id/email_Edit_Login"
+        android:hint="insert Email"
+        app:layout_constraintTop_toBottomOf="@id/email_text_login"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_border"
+        android:paddingStart="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pass_text_Login"
+        android:text="비밀번호"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/email_Edit_Login"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@id/back_button_login"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:id="@+id/pass_edit_Login"
+        android:text="16sp"
+        android:hint="insert pass"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@id/pass_text_Login"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_border"
+        android:paddingStart="10dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginBtn_Login"
+        android:text="로그인"
+        android:background="#000000"
+        app:layout_constraintTop_toBottomOf="@id/pass_edit_Login"
+        android:layout_marginTop="24dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/signinBtn_Login"
+        android:text="회원가입"
+        android:background="#000000"
+        app:layout_constraintTop_toBottomOf="@id/loginBtn_Login"
+        android:layout_marginTop="24dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
