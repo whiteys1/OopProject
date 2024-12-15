@@ -88,14 +88,12 @@
                     android:id="@+id/conKeyword1"
                     android:layout_width="57dp"
                     android:layout_height="35dp"
-                    android:layout_marginStart="36dp"
+                    android:layout_marginStart="30dp"
                     android:layout_marginTop="25dp"
-                    android:layout_marginEnd="40dp"
                     android:layout_marginBottom="25dp"
                     android:layout_weight="1"
                     android:text="키워드 1"
                     app:layout_constraintBottom_toTopOf="@+id/textView2"
-                    app:layout_constraintEnd_toStartOf="@+id/conKeyword2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -103,32 +101,33 @@
                     android:id="@+id/conKeyword2"
                     android:layout_width="60dp"
                     android:layout_height="35dp"
+                    android:layout_marginStart="50dp"
                     android:layout_marginTop="25dp"
-                    android:layout_marginEnd="40dp"
                     android:layout_marginBottom="25dp"
                     android:layout_weight="1"
                     android:text="키워드2"
                     app:layout_constraintBottom_toTopOf="@+id/textView2"
-                    app:layout_constraintEnd_toStartOf="@+id/conKeyword3"
+                    app:layout_constraintStart_toEndOf="@+id/conKeyword1"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/conKeyword3"
                     android:layout_width="60dp"
                     android:layout_height="35dp"
+                    android:layout_marginStart="50dp"
                     android:layout_marginTop="25dp"
-                    android:layout_marginEnd="20dp"
                     android:layout_marginBottom="25dp"
                     android:layout_weight="1"
                     android:text="키워드3"
                     app:layout_constraintBottom_toTopOf="@+id/textView2"
-                    app:layout_constraintEnd_toStartOf="@+id/imageButton3"
+                    app:layout_constraintStart_toEndOf="@+id/conKeyword2"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
                     android:id="@+id/imageButton3"
                     android:layout_width="73dp"
                     android:layout_height="71dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="7dp"
                     android:layout_marginEnd="7dp"
                     android:layout_marginBottom="7dp"
@@ -136,6 +135,7 @@
                     android:src="@drawable/filledlike"
                     app:layout_constraintBottom_toTopOf="@+id/textView2"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/conKeyword3"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
@@ -183,12 +183,12 @@
 
                 <ImageButton
                     android:id="@+id/imageButton6"
-                    android:layout_width="40dp"
-                    android:layout_height="38dp"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginEnd="52dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/map"
+                    android:layout_width="49dp"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="2dp"
+                    android:src="@drawable/baseline_map_24"
                     app:layout_constraintBottom_toTopOf="@+id/button3"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView2" />

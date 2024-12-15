@@ -5,7 +5,8 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.KeywordFragment">
+    android:paddingTop="10dp"
+    tools:context=".Fragment.KeywordFragment">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -46,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="전체 키워드"
+        android:text="대표 키워드"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"

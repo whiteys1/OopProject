@@ -50,15 +50,22 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 초기화: 전체 게시물을 어댑터에 전달하여 모든 글 표시
-        viewModel.posts.observe(viewLifecycleOwner){ posts ->
-            postAdapter.updatePosts(posts)
-            viewModel.clearFilter()
-        }
-
         // 필터링된 데이터 관찰
         viewModel.filteredPosts.observe(viewLifecycleOwner) { filteredPosts ->
             postAdapter.updatePosts(filteredPosts)
+            if (filteredPosts.isEmpty()) {
+                binding?.txtRecom?.text = "필터링된 컨텐츠가 없습니다."
+                Toast.makeText(context, "필터링된 글 목록이 없습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                binding?.txtRecom?.text = "추천 컨텐츠"
+            }
+        }
+
+        // 전체 posts 관찰도 유지
+        viewModel.posts.observe(viewLifecycleOwner) { posts ->
+            if (viewModel.filteredPosts.value.isNullOrEmpty()) {
+                postAdapter.updatePosts(posts)
+            }
         }
     }
 

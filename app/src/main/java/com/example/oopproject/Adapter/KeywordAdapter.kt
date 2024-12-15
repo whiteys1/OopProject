@@ -9,11 +9,11 @@ import com.example.oopproject.databinding.ListKeywordBinding
 
 class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() {
     private var keywords: List<Keyword> = listOf()
-    var selectedKeywords = arrayOfNulls<String>(3)
-    private var currentIndex = 0
+    var selectedKeywords : MutableList<String?> = mutableListOf(null, null, null)
+    internal var currentIndex = 0 //키워드 프래그먼트에서 접근을 위해 internal로 선언
 
     interface OnKeywordSelectedListener {
-        fun onKeywordSelected(selectedKeywords: Array<String?>)
+        fun onKeywordSelected(selectedKeywords: List<String?>)
     }
 
     private var listener: OnKeywordSelectedListener? = null
@@ -43,7 +43,6 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() 
                     }
                     listener?.onKeywordSelected(selectedKeywords)
 
-                    // 테스트용 토스트 메시지 (선택사항)
                     Toast.makeText(itemView.context, "키워드가 추가되었습니다", Toast.LENGTH_SHORT).show()
                 } else {
                     // 이미 선택된 키워드라면 토스트 메시지 표시

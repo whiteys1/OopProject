@@ -56,10 +56,15 @@ class PostsViewModel : ViewModel() {
         } ?: _appliedPosts.value
     }
 
-    fun filterByKeyword(selectedKeyword: String) {
+    fun filterByKeyword(keywords: List<String>) {
         _filteredPosts.value = _posts.value?.filter { post ->
-            post.keyword.contains(selectedKeyword)
+            keywords.any { keyword -> post.keyword.contains(keyword) }
         } ?: emptyList()
+    }
+
+    // 단일 키워드 필터링을 위한 오버로드 함수
+    fun filterByKeyword(keyword: String) {
+        filterByKeyword(listOf(keyword))
     }
 
     fun modifyLike(post: Post) {
