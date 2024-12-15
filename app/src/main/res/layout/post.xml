@@ -32,16 +32,6 @@
         app:layout_constraintTop_toBottomOf="@+id/contentImage" />
 
     <TextView
-        android:id="@+id/txtContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="12dp"
-        android:text="상세정보 보기"
-        app:layout_constraintStart_toEndOf="@+id/txtName"
-        app:layout_constraintTop_toBottomOf="@+id/contentImage" />
-
-    <TextView
         android:id="@+id/txtKeyarr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

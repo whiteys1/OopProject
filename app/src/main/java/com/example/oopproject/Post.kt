@@ -25,5 +25,6 @@ data class Post(
     val date: String = "",
     var apply: String = "NONE",
     var like: String = "NONE",
-    val description: String = ""
+    val description: String = "",
+    val imageUrl: String? = ""
 )

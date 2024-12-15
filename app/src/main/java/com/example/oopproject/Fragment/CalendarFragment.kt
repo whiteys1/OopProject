@@ -2,17 +2,13 @@ package com.example.oopproject.Fragment
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.oopproject.Adapter.appliedPostAdapter
-import com.example.oopproject.R
 import com.example.oopproject.databinding.FragmentCalendarBinding
 import com.example.oopproject.viewModel.PostsViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -23,18 +19,32 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 
-class CalendarFragment : Fragment(){
+class CalendarFragment : Fragment() {
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding
     private val viewModel: PostsViewModel by activityViewModels()
-    private val appliedPostAdapter by lazy { appliedPostAdapter(emptyList()) }
+    private val appliedPostAdapter by lazy {
+        appliedPostAdapter(emptyList()) { clickedDate ->    //빈 목록으로 우선 초기화
+            val dateParts = clickedDate.split("/")
+            val year = dateParts[0].toInt()
+            val month = dateParts[1].toInt() - 1  // CalendarDay는 0부터 시작
+            val day = dateParts[2].toInt()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+            val calendarDay = CalendarDay.from(year, month, day)    //캘린더데이 객체 생성
+            binding?.calendarView?.let { calendar ->
+                calendar.currentDate = calendarDay  // 클릭된 달력 날짜로 이동
+                calendar.clearSelection()  // 기존 선택 제거
+                calendar.setDateSelected(calendarDay, true)  // 새로운 날짜 선택상태로 변경
+            }
+
+            binding?.dayText?.text = clickedDate
+            viewModel.filterInCalendar(clickedDate)     //특정 날짜에 대한 일정만 화면에 표시
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
+
         binding?.recAppPost?.layoutManager = LinearLayoutManager(context)
         binding?.recAppPost?.adapter = appliedPostAdapter
 
@@ -42,11 +52,8 @@ class CalendarFragment : Fragment(){
         val date = Date(System.currentTimeMillis())
         binding?.dayText?.text = dateFormat.format(date)
 
-        // 현재 날짜를 CalendarDay 객체로 변환
-        val today = CalendarDay.from(date)
-
-        // 현재 날짜를 달력에서 선택된 상태로 설정
-        binding?.calendarView?.setDateSelected(today, true)
+        val today = CalendarDay.from(date)          //현재 날짜를 캘린더데이 객체로 만들어준 후
+        binding?.calendarView?.setDateSelected(today, true)     //화면에 해당부분 표시
 
         return binding?.root
     }
@@ -65,8 +72,8 @@ class CalendarFragment : Fragment(){
                 val day = dateParts[2].toInt()
                 appliedDates.add(CalendarDay.from(year, month, day))
             }
-            val eventDecorator = EventMarker(Color.RED, appliedDates)
-            binding?.calendarView?.addDecorators(eventDecorator)
+            val eventDecorator = EventMarker(Color.MAGENTA, appliedDates)
+            binding?.calendarView?.addDecorators(eventDecorator)    //점 표시
         }
 
         //매개변수 (1: 객체 자체, 2: day객체, 3: 선택상태)
@@ -79,10 +86,8 @@ class CalendarFragment : Fragment(){
                 if (selectedPosts.isNullOrEmpty()){
                     viewModel.appliedPosts.value?.let{
                         appliedPostAdapter.updatePosts(it)
-                        binding?.applyList?.text = "전체 신청목록"
                     }
                 }else{
-                    binding?.applyList?.text = "${date.month + 1}/${date.day} 신청목록"
                     appliedPostAdapter.updatePosts(selectedPosts)
                 }
             }

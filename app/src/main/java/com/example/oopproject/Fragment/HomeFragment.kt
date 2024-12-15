@@ -27,6 +27,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding
     private val viewModel: PostsViewModel by activityViewModels()
     private val postAdapter by lazy { PostAdapter(emptyList(), viewModel) }
+    private var currentSelectedChip: Chip? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,8 +76,19 @@ class HomeFragment : Fragment() {
     // 칩 클릭 리스너 설정
     private fun setChipClickListeners() {
         val chipClickListener = { chip: Chip ->
-            val selectedKeyword = chip.text.toString()
-            filterAndAlert(selectedKeyword)
+            // 현재 클릭된 칩이 이전에 선택한 칩과 같은 경우
+            if (chip == currentSelectedChip) {
+                // 필터 해제 (모든 게시물 다시 로드)
+                viewModel.clearFilter()
+                currentSelectedChip = null
+                postAdapter.updatePosts(viewModel.posts.value ?: emptyList())
+                binding?.txtRecom?.text = "모든 컨텐츠"
+            } else {
+                // 새로운 칩을 선택한 경우
+                val selectedKeyword = chip.text.toString()
+                filterAndAlert(selectedKeyword)
+                currentSelectedChip = chip
+            }
         }
 
         binding?.apply {

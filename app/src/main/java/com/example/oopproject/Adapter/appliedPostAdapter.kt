@@ -14,9 +14,9 @@ import java.util.concurrent.TimeUnit
 
 val dateFormat = SimpleDateFormat("yyyy/MM/dd")
 
-class appliedPostAdapter(private var posts: List<Post>) : RecyclerView.Adapter<appliedPostAdapter.Holder>(){
-    class Holder(val binding: AppliedpostBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(post: Post){
+class appliedPostAdapter(private var posts: List<Post>, private val onDateClick: ((String) -> Unit)? = null) : RecyclerView.Adapter<appliedPostAdapter.Holder>() {
+    class Holder(val binding: AppliedpostBinding, private val onDateClick: ((String) -> Unit)? = null) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(post: Post) {
             val targetDate = dateFormat.parse(post.date)
             val currentDate = Date()
             val Dday = TimeUnit.MILLISECONDS.toDays(targetDate.time - currentDate.time)
@@ -24,6 +24,11 @@ class appliedPostAdapter(private var posts: List<Post>) : RecyclerView.Adapter<a
             binding.applyDday.text = "D-$Dday"
             binding.applyDate.text = post.date
             binding.applyName.text = post.name
+
+            // 날짜 클릭 리스너 추가
+            binding.applyDate.setOnClickListener {
+                onDateClick?.invoke(post.date)      //날짜를 외부로 콜백을 통해 전달
+            }
 
             binding.applyContent.setOnClickListener {
                 val bundle = Bundle().apply {
@@ -36,7 +41,7 @@ class appliedPostAdapter(private var posts: List<Post>) : RecyclerView.Adapter<a
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = AppliedpostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return Holder(binding)
+        return Holder(binding, onDateClick)
     }
 
     override fun getItemCount() = posts.size
@@ -47,6 +52,6 @@ class appliedPostAdapter(private var posts: List<Post>) : RecyclerView.Adapter<a
 
     fun updatePosts(newPosts: List<Post>) {
         posts = newPosts
-        notifyDataSetChanged() // UI 갱신
+        notifyDataSetChanged()
     }
 }

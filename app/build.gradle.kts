@@ -41,9 +41,12 @@ android {
 }
 
 dependencies {
-    implementation ("androidx.paging:paging-runtime:3.3.4")
+    implementation("com.github.bumptech.glide:glide:4.15.1") // Glide 최신 버전
+    implementation("androidx.paging:paging-runtime:3.3.4")
     implementation("com.prolificinteractive:material-calendarview:1.4.3")
-    implementation("com.google.firebase:firebase-database:21.0.0'")
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-database")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
