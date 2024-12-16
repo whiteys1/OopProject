@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.oopproject.Post
@@ -11,7 +13,8 @@ import com.example.oopproject.R
 import com.example.oopproject.databinding.PostBinding
 import com.example.oopproject.viewModel.PostsViewModel
 
-class PostAdapter(private var posts: List<Post>, private val viewModel: PostsViewModel) : RecyclerView.Adapter<PostAdapter.Holder>() {
+class PostAdapter(private val viewModel: PostsViewModel) : ListAdapter<Post, PostAdapter.Holder>(PostDiffCallback()) {
+
     class Holder(val binding: PostBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post, viewModel: PostsViewModel) {
             binding.LikeOrNot.setImageResource(
@@ -38,7 +41,7 @@ class PostAdapter(private var posts: List<Post>, private val viewModel: PostsVie
             binding.LikeOrNot.setOnClickListener {
                 viewModel.modifyLike(post)
 
-                // **좋아요 상태 즉시 반영**
+                // 좋아요 상태 즉시 반영
                 post.like = if (post.like == "LIKE") "NONE" else "LIKE"
                 binding.LikeOrNot.setImageResource(
                     when (post.like) {
@@ -64,15 +67,17 @@ class PostAdapter(private var posts: List<Post>, private val viewModel: PostsVie
         return Holder(binding)
     }
 
-    override fun getItemCount() = posts.size
-
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(posts[position], viewModel)
+        holder.bind(getItem(position), viewModel)
+    }
+}
+
+private class PostDiffCallback : DiffUtil.ItemCallback<Post>() {
+    override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
+        return oldItem.postId == newItem.postId
     }
 
-    // 외부에서 필터링된 데이터를 설정하고 갱신하기 위한 메서드
-    fun updatePosts(newPosts: List<Post>) {
-        posts = newPosts
-        notifyDataSetChanged()
+    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
+        return oldItem == newItem
     }
 }

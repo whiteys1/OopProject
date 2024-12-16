@@ -1,5 +1,9 @@
 package com.example.oopproject
 
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 enum class EGen{
     MALE,
     FEMALE,
@@ -16,4 +20,10 @@ data class Post(
     var like: String = "NONE",
     val description: String = "",
     val imageUrl: String? = ""
-)
+){
+    fun isApplied() = apply == "APPLIED"
+    fun isDueDatePassed(currentDate: Date): Boolean{
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        return dateFormat.parse(date).after(currentDate)
+    }
+}

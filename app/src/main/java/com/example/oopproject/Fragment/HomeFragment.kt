@@ -1,5 +1,6 @@
 package com.example.oopproject.Fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,7 +23,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
     private val viewModel: PostsViewModel by activityViewModels()
-    private val postAdapter by lazy { PostAdapter(emptyList(), viewModel) }
+    private val postAdapter by lazy { PostAdapter(viewModel) }
     private var currentSelectedChip: Chip? = null
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val database: DatabaseReference = FirebaseDatabase.getInstance().reference
@@ -53,19 +54,13 @@ class HomeFragment : Fragment() {
 
         // 필터링된 데이터 관찰
         viewModel.filteredPosts.observe(viewLifecycleOwner) { filteredPosts ->
-            postAdapter.updatePosts(filteredPosts)
-            if (filteredPosts.isEmpty()) {
-                binding?.txtRecom?.text = "필터링된 컨텐츠가 없습니다."
-                Toast.makeText(context, "필터링된 글 목록이 없습니다.", Toast.LENGTH_SHORT).show()
-            } else {
-                binding?.txtRecom?.text = "추천 컨텐츠"
-            }
+            postAdapter.submitList(filteredPosts)
         }
 
         // 전체 posts 관찰도 유지
         viewModel.posts.observe(viewLifecycleOwner) { posts ->
             if (viewModel.filteredPosts.value.isNullOrEmpty()) {
-                postAdapter.updatePosts(posts)
+                postAdapter.submitList(posts)
             }
         }
     }
@@ -74,10 +69,10 @@ class HomeFragment : Fragment() {
     private fun filterAndAlert(selectedKeyword: String) {
         viewModel.filterByKeyword(selectedKeyword)
         if (viewModel.filteredPosts.value.isNullOrEmpty()) {
-            Toast.makeText(context, "필터링된 글 목록이 없습니다.", Toast.LENGTH_SHORT).show()
             binding?.txtRecom?.text = "추천 컨텐츠가 없습니다."
+            Toast.makeText(context, "필터링된 글 목록이 없습니다.", Toast.LENGTH_SHORT).show()
         } else {
-            binding?.txtRecom?.text = "$selectedKeyword 컨텐츠"
+            binding?.txtRecom?.text = "추천 컨텐츠"
         }
     }
 
@@ -86,13 +81,15 @@ class HomeFragment : Fragment() {
         val chipClickListener = { chip: Chip ->
             // 현재 클릭된 칩이 이전에 선택한 칩과 같은 경우
             if (chip == currentSelectedChip) {
-                // 필터 해제 (모든 게시물 다시 로드)
+                chip.setTextColor(Color.BLACK)
                 viewModel.clearFilter()
                 currentSelectedChip = null
-                postAdapter.updatePosts(viewModel.posts.value ?: emptyList())
                 binding?.txtRecom?.text = "추천 컨텐츠"
             } else {
-                // 새로운 칩을 선택한 경우
+                currentSelectedChip?.setTextColor(Color.BLACK)
+
+                chip.setTextColor(Color.RED)
+
                 val selectedKeyword = chip.text.toString()
                 filterAndAlert(selectedKeyword)
                 currentSelectedChip = chip

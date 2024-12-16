@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 
 val dateFormat = SimpleDateFormat("yyyy/MM/dd")
 
-class AppliedPostAdapter(private val onDateClick: ((String) -> Unit)? = null) : ListAdapter<Post, AppliedPostAdapter.Holder>(PostDiffCallback()) {
+class AppliedPostAdapter(private val onDateClick: ((String) -> Unit)? = null) : ListAdapter<Post, AppliedPostAdapter.Holder>(AppliedPostDiffCallback()) {
     class Holder(val binding: AppliedpostBinding, private val onDateClick: ((String) -> Unit)? = null) : RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post) {
             val targetDate = dateFormat.parse(post.date)
@@ -56,7 +56,7 @@ class AppliedPostAdapter(private val onDateClick: ((String) -> Unit)? = null) : 
     }
 }
 
-class PostDiffCallback : DiffUtil.ItemCallback<Post>() {        //post들을 비교
+private class AppliedPostDiffCallback : DiffUtil.ItemCallback<Post>() {        //post들을 비교
 
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
         return oldItem.postId == newItem.postId         //두 객체가 같은 것인지

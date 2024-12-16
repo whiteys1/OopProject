@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.oopproject.Adapter.AppliedPostAdapter
+import com.example.oopproject.Adapter.dateFormat
 import com.example.oopproject.databinding.FragmentCalendarBinding
 import com.example.oopproject.viewModel.PostsViewModel
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -49,12 +50,12 @@ class CalendarFragment : Fragment() {
             timeZone = TimeZone.getTimeZone("Asia/Seoul")  // 한국 시간대로 명시적 설정
         }
 
-        val date = Date(System.currentTimeMillis())
-        binding?.dayText?.text = dateFormat.format(date)
+        binding?.dayText?.text = dateFormat.format(Date(System.currentTimeMillis()))
 
-        val today = dateFormat.format(date).toCalendarDay()         //현재 날짜를 캘린더데이 객체로 만들어준 후
+        val today = dateFormat.format(Date(System.currentTimeMillis())).toCalendarDay()         //현재 날짜를 캘린더데이 객체로 만들어준 후
         binding?.calendarView?.setDateSelected(today, true)     //화면에 해당부분 표시
-
+        val todayDecorator = EventMarker(Color.BLUE, hashSetOf(today))
+        binding?.calendarView?.addDecorators(todayDecorator)
         return binding?.root
     }
 
@@ -82,20 +83,18 @@ class CalendarFragment : Fragment() {
 
         //매개변수 (1: 객체 자체, 2: day객체, 3: 선택상태)
         binding?.calendarView?.setOnDateChangedListener { _, date, _ ->
-            val selectedDate = "${date.year}/${date.month + 1}/${date.day}"
+            val selectedDate = dateFormat.format(Date(date.year - 1900, date.month, date.day))
             binding?.dayText?.text = selectedDate
             viewModel.filterInCalendar(selectedDate)
         }
     }
 
-    override fun onResume() {
+    override fun onResume() {           //화면을 나갔다가 다시 돌아올 때 오늘 날짜로 초기화하기 위함
         super.onResume()
-
         val dateFormat = SimpleDateFormat("yyyy/MM/dd").apply {
             timeZone = TimeZone.getTimeZone("Asia/Seoul")
         }
-        val date = Date(System.currentTimeMillis())
-        val today = dateFormat.format(date)
+        val today = dateFormat.format(Date(System.currentTimeMillis()))
 
         binding?.calendarView?.let { calendar ->
             calendar.clearSelection()

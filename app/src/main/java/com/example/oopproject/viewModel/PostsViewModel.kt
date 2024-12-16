@@ -11,7 +11,7 @@ import java.util.Locale
 
 class PostsViewModel : ViewModel() {
 
-    private val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
 
     private val _posts = MutableLiveData<List<Post>>()
     val posts: LiveData<List<Post>> = _posts
@@ -32,10 +32,14 @@ class PostsViewModel : ViewModel() {
     }
 
     fun filterByApply() {
-        val currentDate = Date()
-        val filteredPosts = _posts.value?.filter { post -> post.apply == "APPLIED" && dateFormat.parse(post.date).after(currentDate) } ?: emptyList()
+        val currentDate = dateFormat.parse(dateFormat.format(System.currentTimeMillis()))
+        val filterApplyPosts = _posts.value?.filter { post ->
+            post.isApplied() && post.isDueDatePassed(currentDate)
+        } ?: emptyList()
 
-        val sortedPosts = filteredPosts.sortedBy { post -> dateFormat.parse(post.date).time }
+        val sortedPosts = filterApplyPosts.sortedBy { post ->
+            dateFormat.parse(post.date).time
+        }
         _appliedPosts.value = sortedPosts
     }
 
