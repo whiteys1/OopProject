@@ -81,7 +81,8 @@ class PostDetailRepository {
                         date = snapshot.child("date").getValue(String::class.java) ?: "",
                         apply = snapshot.child("apply").getValue(String::class.java) ?: "NONE",
                         like = snapshot.child("like").getValue(String::class.java) ?: "NONE",
-                        description = snapshot.child("description").getValue(String::class.java) ?: ""
+                        description = snapshot.child("description").getValue(String::class.java) ?: "",
+                        imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
                     )
                     postDetailLiveData.value = post
                 }

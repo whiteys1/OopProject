@@ -35,4 +35,8 @@ class PostDetailViewModel : ViewModel() {
     fun updateLikeStatus(postId: String, currentStatus: String) {
         repository.updateLikeStatus(postId, currentStatus)
     }
+
+    fun updateApplyStatus(postId: String, apply: String) {
+        repository.updateApplyStatus(postId, apply)
+    }
 }

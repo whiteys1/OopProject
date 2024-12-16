@@ -1,6 +1,7 @@
 package com.example.oopproject.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.oopproject.Adapter.CommentAdapter
 import com.example.oopproject.R
 import com.example.oopproject.databinding.FragmentContentBinding
@@ -62,6 +64,26 @@ class ContentFragment : Fragment() {
                 conKeyword3.text = post.keyword.getOrNull(2) ?: ""
                 textView.text = post.dueDate      // 마감일자
                 textView22.text = "작성자 이름"    // 사용자명 표시
+
+                // 신청 버튼 상태 설정
+                button3.apply {
+                    isEnabled = post.apply == "NONE"
+                    text = if (post.apply == "APPLIED") "신청완료" else "신청"
+                }
+
+                post.imageUrl?.let { imageUrl ->
+                    Glide.with(requireContext())
+                        .load(imageUrl)
+                        .placeholder(R.drawable.image_load)
+                        .error(R.drawable.image_error)
+                        .into(imageView5)
+                } ?: run {
+                    Log.d("ContentFragment", "No image URL found for post: ${post.postId}")
+                    imageView5.setImageResource(R.drawable.profile)
+                    imageView5.setOnClickListener {
+                        Toast.makeText(requireContext(), "Failed to load image for post ${post.postId}", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
 
@@ -105,7 +127,17 @@ class ContentFragment : Fragment() {
 
         // 신청 버튼
         binding?.button3?.setOnClickListener {
-            //신청 구현
+            val postId = arguments?.getString("postId")
+            val post = viewModel.postDetail.value
+            if (postId != null && post != null) {
+                if (post.apply == "NONE") {
+                    viewModel.updateApplyStatus(postId, post.apply)
+                    binding?.button3?.isEnabled = false  // 버튼 비활성화
+                    Toast.makeText(context, "신청되었습니다", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "이미 신청한 게시글입니다", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         // 지도 버튼
