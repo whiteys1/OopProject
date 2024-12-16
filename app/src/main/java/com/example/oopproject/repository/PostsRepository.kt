@@ -12,27 +12,24 @@ import com.google.firebase.storage.storage
 class PostsRepository {
     val database = Firebase.database
     val storage = Firebase.storage
-    val postRef = database.getReference("posts")
+    val postRef = database.getReference("posts")        //테이블 중에 posts(글)에 해당하는 것만 참조
     val storageRef = storage.reference
 
     fun observePosts(posts: MutableLiveData<List<Post>>) {
-        postRef.addValueEventListener(object : ValueEventListener {
+        postRef.addValueEventListener(object : ValueEventListener {     //변경이 감지되면 onDataChange 호출
             override fun onDataChange(snapshot: DataSnapshot) {
                 val postsList = mutableListOf<Post>()
+
                 for (postSnapshot in snapshot.children) {
                     val postId = postSnapshot.child("postId").getValue(String::class.java) ?: "1"
                     val name = postSnapshot.child("name").getValue(String::class.java) ?: "오류"
-
-                    val keyword = postSnapshot.child("keyword").children.mapNotNull {
-                        it.getValue(String::class.java)
-                    }
-
+                    val keyword = postSnapshot.child("keyword").children.mapNotNull { it.getValue(String::class.java) }
                     val dueDate = postSnapshot.child("dueDate").getValue(String::class.java) ?: ""
                     val date = postSnapshot.child("date").getValue(String::class.java) ?: ""
                     val apply = postSnapshot.child("apply").getValue(String::class.java) ?: "NONE"
                     val like = postSnapshot.child("like").getValue(String::class.java) ?: "NONE"
                     val description = postSnapshot.child("description").getValue(String::class.java) ?: ""
-                    val imageUrl = postSnapshot.child("imageUrl").getValue(String::class.java)
+                    val imageUrl = postSnapshot.child("imageUrl").getValue(String::class.java) ?: ""
 
                     postsList.add(
                         Post(postId, name, keyword, dueDate, date, apply, like, description, imageUrl)

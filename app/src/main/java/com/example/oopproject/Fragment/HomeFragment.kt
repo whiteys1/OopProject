@@ -7,48 +7,49 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.oopproject.Adapter.PostAdapter
-import com.example.oopproject.EGen
 import com.example.oopproject.R
 import com.example.oopproject.databinding.FragmentHomeBinding
 import com.example.oopproject.viewModel.PostsViewModel
 import com.google.android.material.chip.Chip
-import kotlinx.coroutines.flow.collectLatest
-
-class User(val userName:String, val gen: EGen)
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class HomeFragment : Fragment() {
 
-    private var user = User("KAU", EGen.COMPANY)
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
     private val viewModel: PostsViewModel by activityViewModels()
     private val postAdapter by lazy { PostAdapter(emptyList(), viewModel) }
     private var currentSelectedChip: Chip? = null
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         binding?.recPost?.layoutManager = LinearLayoutManager(context)
         binding?.recPost?.adapter = postAdapter
 
-        setChipClickListeners()
+        val user = auth.currentUser
+        user?.let { user ->
+            val userId = user.uid
+            database.child("users").child(userId).get().addOnSuccessListener { datasnapshot ->
+                val nickname = datasnapshot.child("nickname").getValue(String::class.java) ?: "User Error"
 
-        binding?.userIcon?.setImageResource(R.drawable.profile)
-
-        binding?.userName?.text = user.userName
-
+                binding?.userIcon?.setImageResource(R.drawable.profile)
+                binding?.userName?.text = "$nickname"
+            }
+        }
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setChipClickListeners()
 
         // 필터링된 데이터 관찰
         viewModel.filteredPosts.observe(viewLifecycleOwner) { filteredPosts ->
@@ -76,7 +77,7 @@ class HomeFragment : Fragment() {
             Toast.makeText(context, "필터링된 글 목록이 없습니다.", Toast.LENGTH_SHORT).show()
             binding?.txtRecom?.text = "추천 컨텐츠가 없습니다."
         } else {
-            binding?.txtRecom?.text = "추천 컨텐츠"
+            binding?.txtRecom?.text = "$selectedKeyword 컨텐츠"
         }
     }
 
@@ -89,7 +90,7 @@ class HomeFragment : Fragment() {
                 viewModel.clearFilter()
                 currentSelectedChip = null
                 postAdapter.updatePosts(viewModel.posts.value ?: emptyList())
-                binding?.txtRecom?.text = "모든 컨텐츠"
+                binding?.txtRecom?.text = "추천 컨텐츠"
             } else {
                 // 새로운 칩을 선택한 경우
                 val selectedKeyword = chip.text.toString()
@@ -110,30 +111,3 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 }
-
-
-
-// 페이징 시도
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        lifecycleScope.launchWhenStarted {
-//            viewModel.postsFlow.collectLatest { pagingData ->
-//                postAdapter.submitData(pagingData)
-//            }
-//        }
-//
-//        // 필터링된 데이터 관찰
-//        viewModel.filteredPosts.observe(viewLifecycleOwner) { filteredPosts ->
-//            val pagingData = PagingData.from(filteredPosts)
-//            lifecycleScope.launchWhenStarted {
-//                postAdapter.submitData(pagingData)
-//            }
-//        }
-//    }
-
-//        // 초기화: 전체 게시물을 어댑터에 전달하여 모든 글 표시
-//        viewModel.posts.observe(viewLifecycleOwner){ posts ->
-//            postAdapter.submit(posts)
-//            viewModel.clearFilter()
-//        }
