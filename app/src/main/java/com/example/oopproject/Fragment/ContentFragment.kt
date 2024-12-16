@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,12 +13,16 @@ import com.example.oopproject.Adapter.CommentAdapter
 import com.example.oopproject.R
 import com.example.oopproject.databinding.FragmentContentBinding
 import com.example.oopproject.viewModel.PostDetailViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class ContentFragment : Fragment() {
     private var _binding: FragmentContentBinding? = null
     private val binding get() = _binding
     private lateinit var adapter: CommentAdapter
     private val viewModel: PostDetailViewModel by viewModels()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +43,7 @@ class ContentFragment : Fragment() {
         setupRecyclerView()
         observeData()
         setupButtons()
+        setupCommentSubmission(postId)
     }
 
     private fun setupRecyclerView() {
@@ -71,6 +77,15 @@ class ContentFragment : Fragment() {
         viewModel.comments.observe(viewLifecycleOwner) { comments ->
             adapter.updateComments(comments)
         }
+
+        viewModel.commentStatus.observe(viewLifecycleOwner) { isSuccess ->
+            if (isSuccess) {
+                binding?.editTextText?.text?.clear()
+                Toast.makeText(context, "댓글이 작성되었습니다", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "댓글 작성에 실패했습니다", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupButtons() {
@@ -102,5 +117,44 @@ class ContentFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupCommentSubmission(postId: String?) {
+        binding?.cmtMakeBnt?.setOnClickListener(CommentSubmitClickListener(postId))
+    }
+
+    // 댓글 제출을 위한 별도의 ClickListener 클래스
+    private inner class CommentSubmitClickListener(private val postId: String?) : View.OnClickListener {
+        override fun onClick(view: View) {
+            val commentText = binding?.editTextText?.text?.toString()?.trim()
+
+            if (commentText.isNullOrEmpty()) {
+                Toast.makeText(context, "댓글을 입력해주세요", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            if (postId == null) {
+                Toast.makeText(context, "게시글 정보를 찾을 수 없습니다", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val currentUser = auth.currentUser
+            if (currentUser == null) {
+                Toast.makeText(context, "로그인이 필요합니다", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            // Firebase Realtime Database에서 사용자의 닉네임 가져오기
+            Firebase.database.reference.child("users").child(currentUser.uid).child("nickname")
+                .get()
+                .addOnSuccessListener { snapshot ->
+                    val nickname = snapshot.getValue(String::class.java) ?: "Anonymous"
+                    // 여기서 ViewModel의 createComment 함수 호출
+                    viewModel.createComment(postId, nickname, commentText)
+                }
+                .addOnFailureListener {
+                    Toast.makeText(context, "사용자 정보를 가져오는데 실패했습니다", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 }

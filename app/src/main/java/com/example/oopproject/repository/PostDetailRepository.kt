@@ -10,6 +10,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class PostDetailRepository {
     private val database = Firebase.database.reference
@@ -98,5 +101,25 @@ class PostDetailRepository {
     fun updateApplyStatus(postId: String, currentStatus: String) {
         val newStatus = if (currentStatus == "NONE") "APPLIED" else "NONE"
         database.child("posts").child("post$postId").child("apply").setValue(newStatus)
+    }
+
+    fun createComment(postId: String, nickname: String, commentText: String, onComplete: (Boolean) -> Unit) {
+        val commentData = mapOf(
+            "nickname" to nickname,
+            "comment" to commentText,
+            "createdAt" to getCurrentDate() // 시간을 제외한 날짜만 저장
+        )
+
+        database.child("posts").child("post$postId").child("comments")
+            .push()
+            .setValue(commentData)
+            .addOnCompleteListener { task ->
+                onComplete(task.isSuccessful)
+            }
+    }
+
+    private fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        return dateFormat.format(Date())
     }
 }
