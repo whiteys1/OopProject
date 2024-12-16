@@ -62,5 +62,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.auth.ktx)
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 }
 apply(plugin = "com.google.gms.google-services")

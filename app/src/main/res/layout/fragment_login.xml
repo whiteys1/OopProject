@@ -15,7 +15,8 @@
         android:src="@android:drawable/ic_menu_revert"
         android:contentDescription="Back in Login"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,8 +76,8 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:id="@+id/pass_edit_Login"
-        android:text="16sp"
         android:hint="insert pass"
+        android:textSize="16sp"
         android:inputType="textPassword"
         app:layout_constraintTop_toBottomOf="@id/pass_text_Login"
         android:layout_marginTop="10dp"

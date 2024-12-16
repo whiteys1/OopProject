@@ -86,4 +86,14 @@
             app:destination="@id/homeFragment"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/mapDialogFragment"
+        android:name="com.example.oopproject.Fragment.MapDialogFragment"
+        android:label="fragment_mapdialog"
+        tools:layout="@layout/fragment_map_dialog">
+        <action
+            android:id="@+id/action_writeFragment_to_mapDialogFragment"
+            app:destination="@+id/mapDialogFragment" />
+    </fragment>
+
 </navigation>

@@ -19,7 +19,9 @@ data class Post(
     var apply: String = "NONE",
     var like: String = "NONE",
     val description: String = "",
-    val imageUrl: String? = ""
+    val imageUrl: String? = "",
+    val latitude : Double? = 0.0,
+    val longitude : Double? = 0.0
 ){
     fun isApplied() = apply == "APPLIED"
     fun isDueDatePassed(currentDate: Date): Boolean{

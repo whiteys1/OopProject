@@ -1,12 +1,15 @@
 package com.example.oopproject.Fragment
 
 import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -23,7 +26,9 @@ class writeFragment : Fragment() {
 
     private lateinit var binding : FragmentWriteBinding
     private lateinit var postWriteViewModel: PostWriteViewModel
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
 
+    private var selectedImageUrl : Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +52,16 @@ class writeFragment : Fragment() {
             datePicker.show()
         }
 
+        binding.placeEditWrite.setOnClickListener {
+            val mapDialogFragment = MapDialogFragment()
+            mapDialogFragment.setTargetFragment(this, 0)
+            mapDialogFragment.show(parentFragmentManager, "MapDialogFragment")
+        }
+
+        postWriteViewModel.selectedLatLng.observe(viewLifecycleOwner, Observer { latLng ->
+            binding.placeEditWrite.setText(latLng?.let { "${it.latitude}, ${it.longitude}"} ?: "")
+        })
+
         binding.submitWrite.setOnClickListener{
             val title = binding.editTitleWrite.text.toString()
             val description = binding.editContentsWrite.text.toString()
@@ -58,11 +73,15 @@ class writeFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            val selectedLatLng = postWriteViewModel.selectedLatLng.value
+
             val post = Post(
                 name = title,
                 keyword = keywords,
                 date = dueDate,
                 description = description,
+                latitude = selectedLatLng?.latitude ?: 0.0,
+                longitude =  selectedLatLng?.longitude ?: 0.0,
                 apply = "NONE",
                 like = "NONE",
                 dueDate = System.currentTimeMillis().toString()
