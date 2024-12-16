@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.oopproject.Post
 import com.example.oopproject.R
 import com.example.oopproject.databinding.FragmentWriteBinding
@@ -60,11 +61,11 @@ class writeFragment : Fragment() {
             val post = Post(
                 name = title,
                 keyword = keywords,
-                dueDate = dueDate,
+                date = dueDate,
                 description = description,
                 apply = "NONE",
                 like = "NONE",
-                date = System.currentTimeMillis().toString()
+                dueDate = System.currentTimeMillis().toString()
             )
 
             postWriteViewModel.createPost(post)
@@ -76,6 +77,10 @@ class writeFragment : Fragment() {
                     Toast.makeText(requireContext(), "작성 실패", Toast.LENGTH_SHORT).show()
                 }
             })
+        }
+
+        binding.backButtonWrite.setOnClickListener{
+            findNavController().navigate(R.id.action_writeFragment_to_homeFragment)
         }
         return binding.root
     }
