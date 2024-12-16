@@ -9,6 +9,7 @@ import com.example.oopproject.databinding.ListKeywordBinding
 
 class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() {
     private var keywords: List<Keyword> = listOf()
+    private var filteredKeywords: List<Keyword> = listOf()  // 필터링된 키워드 리스트
     var selectedKeywords : MutableList<String?> = mutableListOf(null, null, null)
     internal var currentIndex = 0 //키워드 프래그먼트에서 접근을 위해 internal로 선언
 
@@ -57,16 +58,26 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() 
         return KeywordViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: KeywordViewHolder, position: Int) {
-        holder.bind(keywords[position])
-    }
-
-    override fun getItemCount() = keywords.size
-
     fun setKeywords(keywords: List<Keyword>) {
         this.keywords = keywords
-        notifyDataSetChanged() //키워드의 데이터베이스가 변화되면 알려줌
+        this.filteredKeywords = keywords  // 초기에는 모든 키워드 표시
+        notifyDataSetChanged()
     }
 
+    fun filter(query: String) {
+        filteredKeywords = if (query.isEmpty()) {
+            keywords  // 검색어가 없으면 모든 키워드 표시
+        } else {
+            keywords.filter { keyword ->
+                keyword.keyword.contains(query, ignoreCase = true)  // 대소문자 구분 없이 검색
+            }
+        }
+        notifyDataSetChanged()
+    }
 
+    override fun onBindViewHolder(holder: KeywordViewHolder, position: Int) {
+        holder.bind(filteredKeywords[position])  // filteredKeywords 사용
+    }
+
+    override fun getItemCount() = filteredKeywords.size  // filteredKeywords 크기 반환
 }

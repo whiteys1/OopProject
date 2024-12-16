@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -38,6 +39,7 @@ class KeywordFragment : Fragment(), KeywordAdapter.OnKeywordSelectedListener  {
         setupChipButtons()
         observeKeywords()
         setupSearchButton()
+        setupSearchView()
     }
 
     private fun setupRecyclerView() {
@@ -116,4 +118,16 @@ class KeywordFragment : Fragment(), KeywordAdapter.OnKeywordSelectedListener  {
         }
     }
 
+    private fun setupSearchView() {
+        binding?.srchKw?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter(newText ?: "")
+                return true
+            }
+        })
+    }
 }
