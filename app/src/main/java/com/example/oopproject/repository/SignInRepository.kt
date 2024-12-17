@@ -1,5 +1,6 @@
 package com.example.oopproject.repository
 
+import com.example.oopproject.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -18,7 +19,12 @@ class SignInRepository {
             .addOnCompleteListener{ task ->
                 if ( task.isSuccessful ) {
                     val uid = auth.currentUser?.uid ?: return@addOnCompleteListener
-                    val userData = mapOf("nickname" to nickname)
+                    val userData = User(
+                        uid = uid,
+                        nickname = nickname,
+                        posts = listOf("defaultPostId"),
+                        appliedPosts = listOf("defaultAppliedPostId")
+                    )
                     database.child("users").child(uid).setValue(userData)
                         .addOnSuccessListener { onSuccess() }
                         .addOnFailureListener { error -> onError(error.message ?: "Unknown error") }
