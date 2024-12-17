@@ -19,7 +19,10 @@ import com.example.oopproject.databinding.FragmentWriteBinding
 import com.example.oopproject.viewModel.PostWriteViewModel
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import java.util.UUID
 
 class writeFragment : Fragment() {
@@ -37,6 +40,17 @@ class writeFragment : Fragment() {
         val binding = FragmentWriteBinding.inflate(inflater, container, false)
 
         postWriteViewModel = ViewModelProvider(this).get(PostWriteViewModel::class.java)
+
+        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if ( uri != null ) {
+                selectedImageUrl = uri
+                binding.imageInsertWrite.setBackgroundResource(R.drawable.image_load)
+                Toast.makeText(requireContext(), "이미지가 선택되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.imageInsertWrite.setOnClickListener {
+            imagePickerLauncher.launch("image/*")
+        }
 
         binding.dueEditWrite.setOnClickListener{
             val calendar = Calendar.getInstance()
@@ -75,6 +89,8 @@ class writeFragment : Fragment() {
 
             val selectedLatLng = postWriteViewModel.selectedLatLng.value
 
+            val currentDate = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(Date())
+
             val post = Post(
                 name = title,
                 keyword = keywords,
@@ -84,10 +100,14 @@ class writeFragment : Fragment() {
                 longitude =  selectedLatLng?.longitude ?: 0.0,
                 apply = "NONE",
                 like = "NONE",
-                dueDate = System.currentTimeMillis().toString()
+                dueDate = currentDate
             )
 
-            postWriteViewModel.createPost(post)
+            selectedImageUrl?.let { imageUri ->
+                postWriteViewModel.uploadImageAndCreatPost(imageUri, post)
+            } ?: run {
+                Toast.makeText(requireContext(), "이미지가 선택되지 않았습니다.", Toast.LENGTH_SHORT).show()
+            }
 
             postWriteViewModel.isPostCreated.observe(viewLifecycleOwner, Observer { isSuccessful ->
                 if (isSuccessful) {

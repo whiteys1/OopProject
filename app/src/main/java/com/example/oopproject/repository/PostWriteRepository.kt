@@ -1,14 +1,34 @@
 package com.example.oopproject.repository
 
+import android.net.Uri
 import android.provider.ContactsContract.Data
 import com.example.oopproject.Post
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import java.util.UUID
 
 class PostWriteRepository {
 
     private val database : DatabaseReference = FirebaseDatabase.getInstance().reference
     private val postRef: DatabaseReference = database.child("posts")
+    private val storage = FirebaseStorage.getInstance()
+
+    fun uploadImage(imageUri : Uri, onComplete: (String?) -> Unit) {
+        val storageRef = storage.reference.child("images/${UUID.randomUUID()}.jpg")
+
+        storageRef.putFile(imageUri)
+            .addOnSuccessListener {
+                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                    onComplete(uri.toString())
+                }.addOnFailureListener {
+                    onComplete(null)
+                }
+            }
+            .addOnFailureListener {
+                onComplete(null)
+            }
+    }
 
     fun createPost(initialPost: Post, onComplete: (Boolean) -> Unit) {
 

@@ -1,5 +1,6 @@
 package com.example.oopproject.viewModel
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,17 @@ class PostWriteViewModel : ViewModel() {
 
     fun setSelectedLatLng(latLng : LatLng) {
         _selectedLatLng.postValue(latLng)
+    }
+
+    fun uploadImageAndCreatPost(imageUri : Uri, post: Post) {
+        repository.uploadImage(imageUri) { imageUrl ->
+            if (imageUrl != null) {
+                val postWithImage = post.copy(imageUrl = imageUrl)
+                createPost(postWithImage)
+            } else {
+                _isPostCreated.postValue(false)
+            }
+        }
     }
 
     fun createPost(post: Post) {
