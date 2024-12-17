@@ -181,7 +181,7 @@ class ContentFragment : Fragment() {
                 .get()
                 .addOnSuccessListener { snapshot ->
                     val nickname = snapshot.getValue(String::class.java) ?: "Anonymous"
-                    // 여기서 ViewModel의 createComment 함수 호출
+                    // ViewModel의 createComment 함수 호출
                     viewModel.createComment(postId, nickname, commentText)
                 }
                 .addOnFailureListener {

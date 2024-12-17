@@ -11,7 +11,7 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() 
     private var keywords: List<Keyword> = listOf()
     private var filteredKeywords: List<Keyword> = listOf()  // 필터링된 키워드 리스트
     var selectedKeywords : MutableList<String?> = mutableListOf(null, null, null) // 값이 변경이 되어야 하므로 var로 선언
-    internal var currentIndex = 0 //키워드 프래그먼트에서 접근을 위해 internal로 선언, 값이 변경이 되어야 하므로 var로 선언
+    private var currentIndex = 0 //키워드 프래그먼트에서 접근을 위해 internal로 선언, 값이 변경이 되어야 하므로 var로 선언
 
     interface OnKeywordSelectedListener {
         fun onKeywordSelected(selectedKeywords: List<String?>)
@@ -23,29 +23,15 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() 
         this.listener = listener
     }
 
-    // 키워드 추가 로직을 별도 함수로 분리
+    // selectedKeywords에 키워드 추가 로직
     fun addKeyword(newKeyword: String): Boolean {
         // 이미 선택된 키워드인지 확인
         if (selectedKeywords.contains(newKeyword)) {
             return false
         }
-
-        // 빈 슬롯 찾기
-        val emptyIndex = selectedKeywords.indexOfFirst { it == null }
-        when {
-            // 빈 슬롯이 있으면 거기에 추가
-            emptyIndex != -1 -> {
-                selectedKeywords[emptyIndex] = newKeyword
-                currentIndex = (emptyIndex + 1) % 3
-            }
-            // 빈 슬롯이 없으면 현재 인덱스에 추가
-            currentIndex < 3 -> {
-                selectedKeywords[currentIndex] = newKeyword
-                currentIndex = (currentIndex + 1) % 3
-            }
-            // 더 이상 추가할 수 없는 경우
-            else -> return false
-        }
+        // currentIndex 위치에 키워드 추가 (3개를 초과하면 순환)
+        selectedKeywords[currentIndex % 3] = newKeyword
+        currentIndex = (currentIndex + 1) % 3
         return true
     }
 
@@ -56,6 +42,9 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() 
             binding.keywordButton.setOnClickListener {
                 if (addKeyword(keyword.keyword)) {
                     listener?.onKeywordSelected(selectedKeywords)
+                    Toast.makeText(itemView.context, "키워드가 추가되었습니다", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(itemView.context, "이미 선택된 키워드입니다", Toast.LENGTH_SHORT).show()
                 }
             }
         }
