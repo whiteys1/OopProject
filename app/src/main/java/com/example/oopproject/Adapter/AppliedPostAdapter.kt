@@ -20,10 +20,9 @@ class AppliedPostAdapter(private val onDateClick: ((String) -> Unit)? = null) : 
     class Holder(val binding: AppliedpostBinding, private val onDateClick: ((String) -> Unit)? = null) : RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post) {
             val targetDate = dateFormat.parse(post.date)
-            val currentDate = Date()
+            val currentDate = Date(System.currentTimeMillis())
             val Dday = TimeUnit.MILLISECONDS.toDays((targetDate.time) - currentDate.time)
 
-            // D-Day 설정
             binding.applyDday.text = when(Dday.toInt()) {
                 0 -> "Dday"
                 else -> "D-$Dday"

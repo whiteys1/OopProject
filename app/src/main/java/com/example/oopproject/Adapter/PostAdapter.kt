@@ -40,9 +40,6 @@ class PostAdapter(private val viewModel: PostsViewModel) : ListAdapter<Post, Pos
 
             binding.LikeOrNot.setOnClickListener {
                 viewModel.modifyLike(post)
-
-                // 좋아요 상태 즉시 반영
-                post.like = if (post.like == "LIKE") "NONE" else "LIKE"
                 binding.LikeOrNot.setImageResource(
                     when (post.like) {
                         "LIKE" -> R.drawable.filledlike

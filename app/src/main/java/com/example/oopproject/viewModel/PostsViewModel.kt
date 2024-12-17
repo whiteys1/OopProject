@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.example.oopproject.Post
 import com.example.oopproject.repository.PostsRepository
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class PostsViewModel : ViewModel() {
