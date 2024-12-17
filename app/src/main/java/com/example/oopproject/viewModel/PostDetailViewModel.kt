@@ -27,8 +27,8 @@ class PostDetailViewModel : ViewModel() {
             _comments.postValue(newComments)
         }
 
-        repository.observePostDetail(postId).observeForever { newPostDetail ->
-            _postDetail.postValue(newPostDetail)
+        repository.getPostDetail(postId) { post ->
+            _postDetail.value = post
         }
 
         repository.observeLikeStatus(postId).observeForever { newLikeStatus ->

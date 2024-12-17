@@ -35,9 +35,9 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() 
         return true
     }
 
-    inner class KeywordViewHolder(private val binding: ListKeywordBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(keyword: Keyword) {
+    // keword 선택 클래스
+    inner class KeywordViewHolder(private val binding: ListKeywordBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(keyword: Keyword) { // 키워드 데이터를 뷰에 바인딩하는 함수
             binding.keywordButton.text = keyword.keyword
             binding.keywordButton.setOnClickListener {
                 if (addKeyword(keyword.keyword)) {
@@ -50,17 +50,20 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() 
         }
     }
 
+    //
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeywordViewHolder {
         val binding = ListKeywordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return KeywordViewHolder(binding)
     }
 
+    // 키워드 리스트 설정
     fun setKeywords(keywords: List<Keyword>) {
         this.keywords = keywords
         this.filteredKeywords = keywords  // 초기에는 모든 키워드 표시
         notifyDataSetChanged()
     }
 
+    // 검색어 필터링
     fun filter(query: String) {
         filteredKeywords = if (query.isEmpty()) {
             keywords  // 검색어가 없으면 모든 키워드 표시

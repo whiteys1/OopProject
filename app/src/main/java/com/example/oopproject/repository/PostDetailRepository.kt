@@ -17,6 +17,7 @@ import java.util.Locale
 class PostDetailRepository {
     private val database = Firebase.database.reference
 
+    //댓글 관찰
     fun observeComments(postId: String): LiveData<List<Comment>> {
         val commentsLiveData = MutableLiveData<List<Comment>>()
 
@@ -48,6 +49,7 @@ class PostDetailRepository {
         return commentsLiveData
     }
 
+    //좋아요 관찰
     fun observeLikeStatus(postId: String): LiveData<String> {
         val likeLiveData = MutableLiveData<String>()
 
@@ -65,33 +67,26 @@ class PostDetailRepository {
         return likeLiveData
     }
 
-    fun observePostDetail(postId: String): LiveData<Post> {
-        val postDetailLiveData = MutableLiveData<Post>()
-
-        database.child("posts").child("post$postId") // "post" + postId로 수정
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val post = Post(
-                        postId = snapshot.child("postId").getValue(String::class.java) ?: "",
-                        name = snapshot.child("name").getValue(String::class.java) ?: "",
-                        keyword = snapshot.child("keyword").children.map {
-                            it.getValue(String::class.java) ?: ""
-                        },
-                        dueDate = snapshot.child("dueDate").getValue(String::class.java) ?: "",
-                        date = snapshot.child("date").getValue(String::class.java) ?: "",
-                        apply = snapshot.child("apply").getValue(String::class.java) ?: "NONE",
-                        like = snapshot.child("like").getValue(String::class.java) ?: "NONE",
-                        description = snapshot.child("description").getValue(String::class.java) ?: "",
-                        imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
-                    )
-                    postDetailLiveData.value = post
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                }
-            })
-
-        return postDetailLiveData
+    //게시글 상세 관찰
+    fun getPostDetail(postId: String, onComplete: (Post) -> Unit) {
+        database.child("posts").child("post$postId")
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val post = Post(
+                    postId = snapshot.child("postId").getValue(String::class.java) ?: "",
+                    name = snapshot.child("name").getValue(String::class.java) ?: "",
+                    keyword = snapshot.child("keyword").children.map {
+                        it.getValue(String::class.java) ?: ""
+                    },
+                    dueDate = snapshot.child("dueDate").getValue(String::class.java) ?: "",
+                    date = snapshot.child("date").getValue(String::class.java) ?: "",
+                    //apply = snapshot.child("apply").getValue(String::class.java) ?: "NONE",
+                    //like = snapshot.child("like").getValue(String::class.java) ?: "NONE",
+                    description = snapshot.child("description").getValue(String::class.java) ?: "",
+                    imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
+                )
+                onComplete(post)
+            }
     }
 
     fun updateLikeStatus(postId: String, currentStatus: String) {
