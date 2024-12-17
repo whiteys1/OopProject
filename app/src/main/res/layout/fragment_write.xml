@@ -106,12 +106,12 @@
         app:layout_constraintBottom_toTopOf="@id/keyword_text_write"
         android:layout_marginBottom="18dp"/>
 
-    <EditText
+    <Button
         android:id="@+id/due_edit_write"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:textSize="14sp"
-        android:hint="마감 날짜 입력"
+        android:text="마감 날짜 입력"
         app:layout_constraintStart_toStartOf="@id/keyword_edit_write"
         app:layout_constraintTop_toTopOf="@id/due_text_write"
         app:layout_constraintBottom_toBottomOf="@id/due_text_write"/>
@@ -149,12 +149,12 @@
         android:layout_marginBottom="20dp"
         app:layout_constraintStart_toStartOf="@id/back_button_write"/>
 
-    <EditText
+    <Button
         android:id="@+id/place_Edit_write"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:textSize="14sp"
-        android:hint="장소를 찍어주세요"
+        android:text="장소를 찍어주세요"
         app:layout_constraintStart_toStartOf="@id/keyword_edit_write"
         app:layout_constraintTop_toTopOf="@id/place_text_write"
         app:layout_constraintBottom_toBottomOf="@id/place_text_write"/>
