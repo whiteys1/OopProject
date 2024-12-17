@@ -31,9 +31,7 @@ class PostsRepository {
                     val description = postSnapshot.child("description").getValue(String::class.java) ?: ""
                     val imageUrl = postSnapshot.child("imageUrl").getValue(String::class.java) ?: ""
 
-                    postsList.add(
-                        Post(postId, name, keyword, dueDate, date, apply, like, description, imageUrl)
-                    )
+                    postsList.add(Post(postId, name, keyword, dueDate, date, apply, like, description, imageUrl))
                 }
                 posts.postValue(postsList)
             }

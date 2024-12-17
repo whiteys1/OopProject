@@ -2,6 +2,7 @@ package com.example.oopproject.Fragment
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,8 +36,8 @@ class HomeFragment : Fragment() {
         binding?.recPost?.adapter = postAdapter
 
         val user = auth.currentUser
-        user?.let { user ->
-            val userId = user.uid
+        user?.let {
+            val userId = it.uid
             database.child("users").child(userId).get().addOnSuccessListener { datasnapshot ->
                 val nickname = datasnapshot.child("nickname").getValue(String::class.java) ?: "User Error"
 
@@ -57,7 +58,7 @@ class HomeFragment : Fragment() {
             postAdapter.submitList(filteredPosts)
         }
 
-        // 전체 posts 관찰도 유지
+        // 전체 posts 관찰 (초기)
         viewModel.posts.observe(viewLifecycleOwner) { posts ->
             if (viewModel.filteredPosts.value.isNullOrEmpty()) {
                 postAdapter.submitList(posts)

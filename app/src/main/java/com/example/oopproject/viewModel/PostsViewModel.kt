@@ -37,14 +37,16 @@ class PostsViewModel : ViewModel() {
         } ?: emptyList()
 
         val sortedPosts = filterApplyPosts.sortedBy { post ->
-            dateFormat.parse(post.date).time
+            dateFormat.parse(post.date)?.time
         }
         _appliedPosts.value = sortedPosts
     }
 
     fun filterInCalendar(selectedDate: String){
         val compareDate = dateFormat.format(dateFormat.parse(selectedDate))
-        _selectedPosts.value = _appliedPosts.value?.filter { post -> post.date == compareDate } ?: _appliedPosts.value
+        _selectedPosts.value = _appliedPosts.value?.filter { post ->
+            post.date == compareDate
+        } ?: _appliedPosts.value
     }
 
     fun filterByKeyword(keywords: List<String>) {

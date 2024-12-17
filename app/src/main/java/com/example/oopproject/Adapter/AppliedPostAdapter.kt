@@ -38,7 +38,7 @@ class AppliedPostAdapter(private val onDateClick: ((String) -> Unit)? = null) : 
 
             binding.applyContent.setOnClickListener {
                 val bundle = Bundle().apply {
-                    putString("postId", post.postId) // postId를 전달
+                    putString("postId", post.postId)
                 }
                 it.findNavController().navigate(R.id.action_calendarFragment_to_contentFragment, bundle)
             }
@@ -58,10 +58,10 @@ class AppliedPostAdapter(private val onDateClick: ((String) -> Unit)? = null) : 
 private class AppliedPostDiffCallback : DiffUtil.ItemCallback<Post>() {        //post들을 비교
 
     override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
-        return oldItem.postId == newItem.postId         //두 객체가 같은 것인지
+        return oldItem.postId == newItem.postId
     }
 
     override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
-        return oldItem == newItem                       //내용이 변경되었는지
+        return oldItem == newItem
     }
 }
