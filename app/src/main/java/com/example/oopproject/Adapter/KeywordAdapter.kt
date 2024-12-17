@@ -10,8 +10,8 @@ import com.example.oopproject.databinding.ListKeywordBinding
 class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() {
     private var keywords: List<Keyword> = listOf()
     private var filteredKeywords: List<Keyword> = listOf()  // 필터링된 키워드 리스트
-    var selectedKeywords : MutableList<String?> = mutableListOf(null, null, null)
-    internal var currentIndex = 0 //키워드 프래그먼트에서 접근을 위해 internal로 선언
+    var selectedKeywords : MutableList<String?> = mutableListOf(null, null, null) // 값이 변경이 되어야 하므로 var로 선언
+    internal var currentIndex = 0 //키워드 프래그먼트에서 접근을 위해 internal로 선언, 값이 변경이 되어야 하므로 var로 선언
 
     interface OnKeywordSelectedListener {
         fun onKeywordSelected(selectedKeywords: List<String?>)

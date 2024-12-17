@@ -142,7 +142,7 @@ class ContentFragment : Fragment() {
 
         // 지도 버튼
         binding?.imageButton6?.setOnClickListener {
-            // 지도 기능 구현
+            findNavController().navigate(R.id.action_contentFragment_to_mapDialogFragment)
         }
     }
 

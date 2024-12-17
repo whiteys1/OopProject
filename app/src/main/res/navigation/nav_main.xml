@@ -65,7 +65,11 @@
         android:id="@+id/contentFragment"
         android:name="com.example.oopproject.Fragment.ContentFragment"
         android:label="fragment_content"
-        tools:layout="@layout/fragment_content" />
+        tools:layout="@layout/fragment_content" >
+        <action
+            android:id="@+id/action_contentFragment_to_mapDialogFragment"
+            app:destination="@id/mapDialogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/keywordFragment"
         android:name="com.example.oopproject.Fragment.KeywordFragment"
