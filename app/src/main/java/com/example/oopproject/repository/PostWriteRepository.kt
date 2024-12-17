@@ -10,7 +10,7 @@ class PostWriteRepository {
     private val database : DatabaseReference = FirebaseDatabase.getInstance().reference
     private val postRef: DatabaseReference = database.child("posts")
 
-    fun createPost(post: Post, onComplete: (Boolean) -> Unit) {
+    fun createPost(initialPost: Post, onComplete: (Boolean) -> Unit) {
 
         postRef.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -20,9 +20,12 @@ class PostWriteRepository {
                     ?.mapNotNull { it.removePrefix("post").toIntOrNull() }
                     ?.maxOrNull() ?: 0
 
-                val nextKey = "post${lastKey + 1}"
+                val nextKey = lastKey + 1
+                val postKey = "post$nextKey"
 
-                postRef.child(nextKey).setValue(post)
+                val postAddedId = initialPost.copy(postId = nextKey.toString())
+
+                postRef.child(postKey).setValue(postAddedId)
                     .addOnCompleteListener { task ->
                         onComplete(task.isSuccessful)
                     }
