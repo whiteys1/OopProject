@@ -22,7 +22,7 @@ import com.example.oopproject.viewModel.PostsViewModel
 class KeywordFragment : Fragment(), KeywordAdapter.OnKeywordSelectedListener  {
     private var _binding: FragmentKeywordBinding? = null    //메모리 누수 방지
     private val binding get() = _binding                    // 읽기 전용 프로퍼티
-    private lateinit var adapter: KeywordAdapter
+    private val adapter: KeywordAdapter by lazy { KeywordAdapter() } // 어댑터 생성
     private val viewModel: KeywordViewModel by viewModels()
 
     override fun onCreateView(
@@ -44,7 +44,6 @@ class KeywordFragment : Fragment(), KeywordAdapter.OnKeywordSelectedListener  {
 
     //리사이클러 뷰 설정 함수
     private fun setupRecyclerView() {
-        adapter = KeywordAdapter()
         adapter.setOnKeywordSelectedListener(this)  // 리스너 설정
         binding?.rcKeyword?.layoutManager = GridLayoutManager(context,4) //Grid: N개씩 배열
         binding?.rcKeyword?.adapter = adapter

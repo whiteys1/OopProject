@@ -10,20 +10,30 @@ import com.example.oopproject.repository.PostDetailRepository
 class PostDetailViewModel : ViewModel() {
     private val repository = PostDetailRepository()
 
-    private lateinit var _comments: LiveData<List<Comment>>
-    private lateinit var _postDetail: LiveData<Post>
-    private lateinit var _likeStatus: LiveData<String>
-    private val _commentStatus = MutableLiveData<Boolean>()
-
+    private val _comments = MutableLiveData<List<Comment>>()
     val comments: LiveData<List<Comment>> get() = _comments
+
+    private val _postDetail = MutableLiveData<Post>()
     val postDetail: LiveData<Post> get() = _postDetail
+
+    private val _likeStatus = MutableLiveData<String>()
     val likeStatus: LiveData<String> get() = _likeStatus
-    val commentStatus: LiveData<Boolean> get() = _commentStatus  // 추가된 부분
+
+    private val _commentStatus = MutableLiveData<Boolean>()
+    val commentStatus: LiveData<Boolean> get() = _commentStatus
 
     fun initialize(postId: String) {
-        _comments = repository.observeComments(postId)
-        _postDetail = repository.observePostDetail(postId)
-        _likeStatus = repository.observeLikeStatus(postId)
+        repository.observeComments(postId).observeForever { newComments ->
+            _comments.postValue(newComments)
+        }
+
+        repository.observePostDetail(postId).observeForever { newPostDetail ->
+            _postDetail.postValue(newPostDetail)
+        }
+
+        repository.observeLikeStatus(postId).observeForever { newLikeStatus ->
+            _likeStatus.postValue(newLikeStatus)
+        }
     }
 
     fun createComment(postId: String, nickname: String, commentText: String) {
