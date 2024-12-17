@@ -57,7 +57,7 @@
                 android:layout_height="250dp">
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/mainImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_launcher_foreground"
@@ -78,7 +78,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/detailTxt"
                     android:layout_width="match_parent"
                     android:layout_height="192dp"
                     android:layout_marginBottom="100dp"
@@ -95,7 +95,7 @@
                     android:layout_marginBottom="25dp"
                     android:layout_weight="1"
                     android:text="키워드 1"
-                    app:layout_constraintBottom_toTopOf="@+id/textView2"
+                    app:layout_constraintBottom_toTopOf="@+id/detailTxt"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -108,7 +108,7 @@
                     android:layout_marginBottom="25dp"
                     android:layout_weight="1"
                     android:text="키워드2"
-                    app:layout_constraintBottom_toTopOf="@+id/textView2"
+                    app:layout_constraintBottom_toTopOf="@+id/detailTxt"
                     app:layout_constraintStart_toEndOf="@+id/conKeyword1"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -121,12 +121,12 @@
                     android:layout_marginBottom="25dp"
                     android:layout_weight="1"
                     android:text="키워드3"
-                    app:layout_constraintBottom_toTopOf="@+id/textView2"
+                    app:layout_constraintBottom_toTopOf="@+id/detailTxt"
                     app:layout_constraintStart_toEndOf="@+id/conKeyword2"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
-                    android:id="@+id/imageButton3"
+                    android:id="@+id/likeBnt"
                     android:layout_width="73dp"
                     android:layout_height="71dp"
                     android:layout_marginStart="24dp"
@@ -135,7 +135,7 @@
                     android:layout_marginBottom="7dp"
                     android:layout_weight="1"
                     android:src="@drawable/filledlike"
-                    app:layout_constraintBottom_toTopOf="@+id/textView2"
+                    app:layout_constraintBottom_toTopOf="@+id/detailTxt"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/conKeyword3"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -150,7 +150,7 @@
                     android:src="@drawable/profile"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintTop_toBottomOf="@+id/detailTxt" />
 
                 <ImageView
                     android:id="@+id/imageView4"
@@ -159,10 +159,10 @@
                     android:layout_marginStart="16dp"
                     android:src="@drawable/profile"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintTop_toBottomOf="@+id/detailTxt" />
 
                 <TextView
-                    android:id="@+id/textView22"
+                    android:id="@+id/writerTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -171,10 +171,10 @@
                     android:textColor="#000000"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/imageView4"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintTop_toBottomOf="@+id/detailTxt" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/applyBnt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="31dp"
@@ -184,19 +184,19 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <ImageButton
-                    android:id="@+id/imageButton6"
+                    android:id="@+id/mapBnt"
                     android:layout_width="49dp"
                     android:layout_height="46dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="25dp"
                     android:layout_marginBottom="2dp"
                     android:src="@drawable/baseline_map_24"
-                    app:layout_constraintBottom_toTopOf="@+id/button3"
+                    app:layout_constraintBottom_toTopOf="@+id/applyBnt"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                    app:layout_constraintTop_toBottomOf="@+id/detailTxt" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/dateTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
@@ -242,7 +242,7 @@
                     android:layout_marginBottom="30dp"
                     android:ems="10"
                     android:inputType="text"
-                    android:text="댓글을 작성해주세요"
+                    android:hint="댓글을 작성해주세요"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
                     app:layout_constraintTop_toTopOf="parent" />

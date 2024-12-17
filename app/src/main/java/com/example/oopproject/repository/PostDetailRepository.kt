@@ -68,7 +68,7 @@ class PostDetailRepository {
     }
 
     //게시글 상세 관찰
-    fun getPostDetail(postId: String, onComplete: (Post) -> Unit) {
+    fun getPostDetail(postId: String, onComplete: (Post) -> Unit) {//반환값 없음
         database.child("posts").child("post$postId")
             .get()
             .addOnSuccessListener { snapshot ->
@@ -83,9 +83,10 @@ class PostDetailRepository {
                     //apply = snapshot.child("apply").getValue(String::class.java) ?: "NONE",
                     //like = snapshot.child("like").getValue(String::class.java) ?: "NONE",
                     description = snapshot.child("description").getValue(String::class.java) ?: "",
-                    imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
+                    imageUrl = snapshot.child("imageUrl").getValue(String::class.java),
+                    writer = snapshot.child("writer").getValue(String::class.java) ?: ""
                 )
-                onComplete(post)
+                onComplete(post) //콜백 함수
             }
     }
 

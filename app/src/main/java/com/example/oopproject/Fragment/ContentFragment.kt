@@ -22,7 +22,7 @@ import com.google.firebase.ktx.Firebase
 class ContentFragment : Fragment() {
     private var _binding: FragmentContentBinding? = null
     private val binding get() = _binding
-    private lateinit var adapter: CommentAdapter
+    private val adapter: CommentAdapter by lazy { CommentAdapter(emptyList()) }
     private val viewModel: PostDetailViewModel by viewModels()
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -49,7 +49,6 @@ class ContentFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = CommentAdapter(emptyList())
         binding?.recView?.layoutManager = LinearLayoutManager(context)
         binding?.recView?.adapter = adapter
     }
@@ -58,15 +57,15 @@ class ContentFragment : Fragment() {
         viewModel.postDetail.observe(viewLifecycleOwner) { post ->
             binding?.apply {
                 postTitle.text = post.name
-                textView2.text = post.description.replace("\\n", "\n")  // 컨텐츠 세부사항
+                detailTxt.text = post.description.replace("\\n", "\n")  // 컨텐츠 세부사항
                 conKeyword1.text = post.keyword.getOrNull(0) ?: ""
                 conKeyword2.text = post.keyword.getOrNull(1) ?: ""
                 conKeyword3.text = post.keyword.getOrNull(2) ?: ""
-                textView.text = post.dueDate      // 마감일자
-                textView22.text = "작성자 이름"    // 사용자명 표시
+                dateTxt.text = post.dueDate      // 마감일자
+                writerTxt.text = post.writer.ifEmpty { "UNKNOWN" }
 
                 // 신청 버튼 상태 설정
-                button3.apply {
+                applyBnt.apply {
                     isEnabled = post.apply == "NONE"
                     text = if (post.apply == "APPLIED") "신청완료" else "신청"
                 }
@@ -76,11 +75,11 @@ class ContentFragment : Fragment() {
                         .load(imageUrl)
                         .placeholder(R.drawable.image_load)
                         .error(R.drawable.image_error)
-                        .into(imageView5)
+                        .into(mainImage)
                 } ?: run {
                     Log.d("ContentFragment", "No image URL found for post: ${post.postId}")
-                    imageView5.setImageResource(R.drawable.profile)
-                    imageView5.setOnClickListener {
+                    mainImage.setImageResource(R.drawable.profile)
+                    mainImage.setOnClickListener {
                         Toast.makeText(requireContext(), "Failed to load image for post ${post.postId}", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -88,7 +87,7 @@ class ContentFragment : Fragment() {
         }
 
         viewModel.likeStatus.observe(viewLifecycleOwner) { likeStatus ->
-            binding?.imageButton3?.setImageResource(
+            binding?.likeBnt?.setImageResource(
                 when (likeStatus) {
                     "LIKE" -> R.drawable.filledlike
                     else -> R.drawable.emptylike
@@ -117,7 +116,7 @@ class ContentFragment : Fragment() {
         }
 
         // 좋아요 버튼
-        binding?.imageButton3?.setOnClickListener {
+        binding?.likeBnt?.setOnClickListener {
             val postId = arguments?.getString("postId")
             val currentStatus = viewModel.likeStatus.value
             if (postId != null && currentStatus != null) {
@@ -126,13 +125,13 @@ class ContentFragment : Fragment() {
         }
 
         // 신청 버튼
-        binding?.button3?.setOnClickListener {
+        binding?.applyBnt?.setOnClickListener {
             val postId = arguments?.getString("postId")
             val post = viewModel.postDetail.value
             if (postId != null && post != null) {
                 if (post.apply == "NONE") {
                     viewModel.updateApplyStatus(postId, post.apply)
-                    binding?.button3?.isEnabled = false  // 버튼 비활성화
+                    binding?.applyBnt?.isEnabled = false  // 버튼 비활성화
                     Toast.makeText(context, "신청되었습니다", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "이미 신청한 게시글입니다", Toast.LENGTH_SHORT).show()
@@ -141,7 +140,7 @@ class ContentFragment : Fragment() {
         }
 
         // 지도 버튼
-        binding?.imageButton6?.setOnClickListener {
+        binding?.mapBnt?.setOnClickListener {
             findNavController().navigate(R.id.action_contentFragment_to_mapDialogFragment)
         }
     }
@@ -158,12 +157,7 @@ class ContentFragment : Fragment() {
     // 댓글 제출을 위한 별도의 ClickListener 클래스
     private inner class CommentSubmitClickListener(private val postId: String?) : View.OnClickListener {
         override fun onClick(view: View) {
-            val commentText = binding?.editTextText?.text?.toString()?.trim()
-
-            if (commentText.isNullOrEmpty()) {
-                Toast.makeText(context, "댓글을 입력해주세요", Toast.LENGTH_SHORT).show()
-                return
-            }
+            val commentText = binding?.editTextText?.text?.toString()?.trim() ?: ""
 
             if (postId == null) {
                 Toast.makeText(context, "게시글 정보를 찾을 수 없습니다", Toast.LENGTH_SHORT).show()
