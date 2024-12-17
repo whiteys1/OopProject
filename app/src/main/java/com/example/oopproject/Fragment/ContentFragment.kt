@@ -151,36 +151,28 @@ class ContentFragment : Fragment() {
     }
 
     private fun setupCommentSubmission(postId: String?) {
-        binding?.cmtMakeBnt?.setOnClickListener(CommentSubmitClickListener(postId))
+        binding?.cmtMakeBnt?.setOnClickListener{submitComment(postId)}
     }
 
-    // 댓글 제출을 위한 별도의 ClickListener 클래스
-    private inner class CommentSubmitClickListener(private val postId: String?) : View.OnClickListener {
-        override fun onClick(view: View) {
-            val commentText = binding?.editTextText?.text?.toString()?.trim() ?: ""
+    private fun submitComment(postId: String?) {
+        val commentText = binding?.editTextText?.text?.toString()?.trim()
+        if (commentText.isNullOrEmpty()) { return }
 
-            if (postId == null) {
-                Toast.makeText(context, "게시글 정보를 찾을 수 없습니다", Toast.LENGTH_SHORT).show()
-                return
-            }
+        val currentUser = auth.currentUser ?: return
 
-            val currentUser = auth.currentUser
-            if (currentUser == null) {
-                Toast.makeText(context, "로그인이 필요합니다", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            // Firebase Realtime Database에서 사용자의 닉네임 가져오기
-            Firebase.database.reference.child("users").child(currentUser.uid).child("nickname")
-                .get()
-                .addOnSuccessListener { snapshot ->
-                    val nickname = snapshot.getValue(String::class.java) ?: "Anonymous"
-                    // ViewModel의 createComment 함수 호출
+        Firebase.database.reference
+            .child("users")
+            .child(currentUser.uid)
+            .child("nickname")
+            .get()
+            .addOnSuccessListener { snapshot ->
+                val nickname = snapshot.getValue(String::class.java) ?: "Anonymous"
+                if (postId != null) {
                     viewModel.createComment(postId, nickname, commentText)
                 }
-                .addOnFailureListener {
-                    Toast.makeText(context, "사용자 정보를 가져오는데 실패했습니다", Toast.LENGTH_SHORT).show()
-                }
-        }
+            }
+            .addOnFailureListener {
+                Toast.makeText(context, "사용자 정보를 가져오는데 실패했습니다", Toast.LENGTH_SHORT).show()
+            }
     }
 }
