@@ -6,10 +6,11 @@ import com.example.oopproject.Keyword
 import com.example.oopproject.repository.KeywordRepository
 
 class KeywordViewModel() : ViewModel() {
-    private val _keywords: LiveData<List<Keyword>>
-    private val repository = KeywordRepository()  // Repository 인스턴스를 생성합니다.
+    private val _keywords: LiveData<List<Keyword>> // 캡슐화
+    private val repository = KeywordRepository()
     init{
-        _keywords = repository.observeKeywords()  // Repository에서 데이터를 가져와서 LiveData에 연결합니다.
+        // 초기화 시 Repository에서 observeKeywords()를 호출하여 LiveData(키워드)를 가져옴
+        _keywords = repository.observeKeywords()
     }
     val keywords = _keywords
 }

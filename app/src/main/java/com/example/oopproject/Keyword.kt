@@ -1,3 +1,3 @@
 package com.example.oopproject
 
-class Keyword (val keyword: String)
+data class Keyword (val keyword: String)

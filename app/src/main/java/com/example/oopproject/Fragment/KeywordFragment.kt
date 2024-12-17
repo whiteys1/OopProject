@@ -20,8 +20,8 @@ import com.example.oopproject.viewModel.KeywordViewModel
 import com.example.oopproject.viewModel.PostsViewModel
 
 class KeywordFragment : Fragment(), KeywordAdapter.OnKeywordSelectedListener  {
-    private var _binding: FragmentKeywordBinding? = null
-    private val binding get() = _binding
+    private var _binding: FragmentKeywordBinding? = null    //메모리 누수 방지
+    private val binding get() = _binding                    // 읽기 전용 프로퍼티
     private lateinit var adapter: KeywordAdapter
     private val viewModel: KeywordViewModel by viewModels()
 
@@ -42,13 +42,15 @@ class KeywordFragment : Fragment(), KeywordAdapter.OnKeywordSelectedListener  {
         setupSearchView()
     }
 
+    //리사이클러 뷰 설정 함수
     private fun setupRecyclerView() {
         adapter = KeywordAdapter()
         adapter.setOnKeywordSelectedListener(this)  // 리스너 설정
-        binding?.rcKeyword?.layoutManager = GridLayoutManager(context,3) //Grid: N개씩 배열
+        binding?.rcKeyword?.layoutManager = GridLayoutManager(context,4) //Grid: N개씩 배열
         binding?.rcKeyword?.adapter = adapter
     }
 
+    // 키워드 데이터 관찰 함수
     private fun observeKeywords() {
         // ViewModel에서 전달된 LiveData를 관찰하여 RecyclerView에 업데이트
         viewModel.keywords.observe(viewLifecycleOwner) { keywords ->
@@ -56,39 +58,30 @@ class KeywordFragment : Fragment(), KeywordAdapter.OnKeywordSelectedListener  {
         }
     }
 
+    // 키워드 선택 시 호출되는 함수, 어뎁터에서 정의
     override fun onKeywordSelected(selectedKeywords: List<String?>) {
         binding?.apply {
-            textView17.text = selectedKeywords[0] ?: "키워드 1"
-            textView18.text = selectedKeywords[1] ?: "키워드 2"
-            textView19.text = selectedKeywords[2] ?: "키워드 3"
+            kwTxt1.text = selectedKeywords[0] ?: "키워드 1"
+            kwTxt2.text = selectedKeywords[1] ?: "키워드 2"
+            kwTxt3.text = selectedKeywords[2] ?: "키워드 3"
         }
     }
 
+    // 메모리 누수 방지
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    // 칩 내의 버튼 설정 함수 버튼을 누를 시 selectedKeywords에 추가
     private fun setupChipButtons() {
         binding?.chipGroup?.apply {
-            // 모든 버튼에 대해 클릭 리스너 설정
             for (i in 0 until childCount) {
                 val button = getChildAt(i) as? Button
                 button?.setOnClickListener {
                     val newKeyword = button.text.toString()
-                    if (!adapter.selectedKeywords.contains(newKeyword)) {
-                        // 비어있는 첫 번째 위치 찾기
-                        val emptyIndex = adapter.selectedKeywords.indexOfFirst { it == null }
-                        if (emptyIndex != -1) {
-                            // 비어있는 위치에 추가
-                            adapter.selectedKeywords[emptyIndex] = newKeyword
-                            adapter.currentIndex = (emptyIndex + 1) % 3
-                        } else if (adapter.currentIndex < 3) {
-                            // 모든 위치가 차있다면 순환
-                            adapter.selectedKeywords[adapter.currentIndex] = newKeyword
-                            adapter.currentIndex = (adapter.currentIndex + 1) % 3
-                        }
-                        adapter.notifyDataSetChanged()
+                    // 어뎁터의 addKeyword 함수 사용
+                    if (adapter.addKeyword(newKeyword)) {
                         onKeywordSelected(adapter.selectedKeywords)
                         Toast.makeText(context, "키워드가 추가되었습니다", Toast.LENGTH_SHORT).show()
                     } else {
@@ -99,8 +92,9 @@ class KeywordFragment : Fragment(), KeywordAdapter.OnKeywordSelectedListener  {
         }
     }
 
+    // 키워드 검색 버튼 설정 함수
     private fun setupSearchButton() {
-        binding?.button2?.setOnClickListener {
+        binding?.kwSearchBnt?.setOnClickListener {
             val selectedKeywords = adapter.selectedKeywords.filterNotNull()
 
             when {
@@ -118,6 +112,7 @@ class KeywordFragment : Fragment(), KeywordAdapter.OnKeywordSelectedListener  {
         }
     }
 
+    // 검색창 설정 함수
     private fun setupSearchView() {
         binding?.srchKw?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

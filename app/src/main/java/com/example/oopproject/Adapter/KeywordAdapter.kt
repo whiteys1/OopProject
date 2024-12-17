@@ -23,31 +23,39 @@ class KeywordAdapter : RecyclerView.Adapter<KeywordAdapter.KeywordViewHolder>() 
         this.listener = listener
     }
 
-    //외부값을 받기 위해 inner class로 선언
-    inner class KeywordViewHolder(private val binding: ListKeywordBinding) : RecyclerView.ViewHolder(binding.root) {
+    // 키워드 추가 로직을 별도 함수로 분리
+    fun addKeyword(newKeyword: String): Boolean {
+        // 이미 선택된 키워드인지 확인
+        if (selectedKeywords.contains(newKeyword)) {
+            return false
+        }
+
+        // 빈 슬롯 찾기
+        val emptyIndex = selectedKeywords.indexOfFirst { it == null }
+        when {
+            // 빈 슬롯이 있으면 거기에 추가
+            emptyIndex != -1 -> {
+                selectedKeywords[emptyIndex] = newKeyword
+                currentIndex = (emptyIndex + 1) % 3
+            }
+            // 빈 슬롯이 없으면 현재 인덱스에 추가
+            currentIndex < 3 -> {
+                selectedKeywords[currentIndex] = newKeyword
+                currentIndex = (currentIndex + 1) % 3
+            }
+            // 더 이상 추가할 수 없는 경우
+            else -> return false
+        }
+        return true
+    }
+
+    inner class KeywordViewHolder(private val binding: ListKeywordBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(keyword: Keyword) {
             binding.keywordButton.text = keyword.keyword
             binding.keywordButton.setOnClickListener {
-                val newKeyword = keyword.keyword
-                // 중복 체크
-                if (!selectedKeywords.contains(newKeyword)) {
-                    // 비어있는 첫 번째 위치 찾기
-                    val emptyIndex = selectedKeywords.indexOfFirst { it == null }
-                    if (emptyIndex != -1) {
-                        // 비어있는 위치에 추가
-                        selectedKeywords[emptyIndex] = newKeyword
-                        currentIndex = (emptyIndex + 1) % 3
-                    } else if (currentIndex < 3) {
-                        // 모든 위치가 차있다면 순환
-                        selectedKeywords[currentIndex] = newKeyword
-                        currentIndex = (currentIndex + 1) % 3
-                    }
+                if (addKeyword(keyword.keyword)) {
                     listener?.onKeywordSelected(selectedKeywords)
-
-                    Toast.makeText(itemView.context, "키워드가 추가되었습니다", Toast.LENGTH_SHORT).show()
-                } else {
-                    // 이미 선택된 키워드라면 토스트 메시지 표시
-                    Toast.makeText(itemView.context, "이미 선택된 키워드입니다", Toast.LENGTH_SHORT).show()
                 }
             }
         }

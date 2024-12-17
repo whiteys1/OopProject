@@ -10,6 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="키워드" />
+        android:text="키워드랑" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

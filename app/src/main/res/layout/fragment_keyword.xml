@@ -55,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/rcKeyword" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/kwTxt1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -65,17 +65,17 @@
         app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/kwTxt2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="키워드 2"
-        app:layout_constraintEnd_toStartOf="@+id/textView19"
-        app:layout_constraintStart_toEndOf="@+id/textView17"
+        app:layout_constraintEnd_toStartOf="@+id/kwTxt3"
+        app:layout_constraintStart_toEndOf="@+id/kwTxt1"
         app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/kwTxt3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -154,14 +154,14 @@
     </com.google.android.material.chip.ChipGroup>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/kwSearchBnt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="40dp"
         android:text="검색"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/kwTxt2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcKeyword"
